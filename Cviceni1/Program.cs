@@ -6,7 +6,7 @@ namespace Cviceni1
     {
         private static void Main(string[] args)
         {
-            vypisUkol4();
+            vypisUkol3();
         }
 
         public static void vypisUkol1()
@@ -51,6 +51,31 @@ namespace Cviceni1
             while (j < 26);
 
             Console.ReadKey();
+        }
+
+        public static void vypisUkol3()
+        {
+            string rc = "";
+            while (rc.Length != 11)
+            {
+                Console.WriteLine("Zadej rodne číslo");
+                rc = Console.ReadLine();
+            }
+
+            //string rc = "875928/8835";
+
+            int mesic;
+            bool jeSpravnyFormat = Int32.TryParse(rc.Substring(2, 2), out mesic);
+
+            if (!jeSpravnyFormat)
+            {
+                Console.WriteLine("Špatně zadané rodné číslo");
+            }
+            else
+            {
+                string vysledek = mesic > 12 ? "Žena" : "Muž";
+                Console.WriteLine(vysledek);
+            }
         }
 
         public static void vypisUkol4()
