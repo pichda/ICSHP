@@ -6,7 +6,7 @@ namespace Cviceni1
     {
         private static void Main(string[] args)
         {
-            vypisUkol2();
+            vypisUkol4();
         }
 
         public static void vypisUkol1()
@@ -51,6 +51,76 @@ namespace Cviceni1
             while (j < 26);
 
             Console.ReadKey();
+        }
+
+        public static void vypisUkol4()
+        {
+            System.Random rnd = new Random();
+            int cislo = rnd.Next(0, 100);
+
+            short pocetPokusu = 0;
+            bool konec = false;
+            while (!konec)
+            {
+                {
+                    while (pocetPokusu < 10)
+                    {
+                        Console.WriteLine("Zadej cislo v rozmezi 0-100");
+                        int hadaneCislo;
+                        bool uspesne = Int32.TryParse(Console.ReadLine(), out hadaneCislo);
+                        while (!uspesne)
+                        {
+                            uspesne = Int32.TryParse(Console.ReadLine(), out hadaneCislo);
+                        }
+                        pocetPokusu++;
+
+                        if (hadaneCislo > 100 && hadaneCislo < 0)
+                        {
+                            Console.WriteLine("Číslo nenalezeno");
+                        }
+                        else
+                        {
+                            if (hadaneCislo > cislo)
+                            {
+                                Console.WriteLine("Hádané číslo je vetší než hledané");
+                            }
+                            else if (hadaneCislo < cislo)
+                            {
+                                Console.WriteLine("Hádané číslo je menší než hledané");
+                            }
+                            else
+                            {
+                                Console.WriteLine($"Uhodl jsi číslo na {pocetPokusu}. pokus. Chceš pokračovat? Stiskni jakoukoliv klávesu pro ano, 'N' pro ne");
+                                if (Console.ReadKey(true).Key == ConsoleKey.N)
+                                {
+                                    konec = true;
+                                    break;
+                                }
+                                else
+                                {
+                                    pocetPokusu = 0;
+                                    cislo = rnd.Next(0, 100);
+                                }
+                            }
+                        }
+                        if (pocetPokusu == 10)
+                        {
+                            Console.WriteLine("Game over");
+                            Console.WriteLine($"Hledane čislo bylo {cislo}. Chceš pokračovat? Stiskni jakoukoliv klávesu pro ano, 'N' pro ne");
+                            if (Console.ReadKey(true).Key == ConsoleKey.N)
+                            {
+                                konec = true;
+                                break;
+                            }
+                            else
+                            {
+                                pocetPokusu = 0;
+                                cislo = rnd.Next(0, 100);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
