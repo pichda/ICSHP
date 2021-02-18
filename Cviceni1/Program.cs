@@ -2,11 +2,18 @@
 
 namespace Cviceni1
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string[] @pole = { "Josef", "Dan", "Michal" };
+            string txt = "Josef Novák\nJindrišská 16\n111 50, Praha 1\n";
+            Console.WriteLine(txt);
+
+            for (int i = 0; i < @pole.Length; i++)
+            {
+                Console.Write($"{pole[i]}\nJindrišská 16\n111 50, Praha 1\n\n");
+            }
         }
     }
 }
