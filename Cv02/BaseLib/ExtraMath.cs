@@ -15,11 +15,23 @@ namespace BaseLib
             rnd = new Random();
         }
 
+        /// <summary>
+        /// Vraci nahodne double cislo v min - max rozmezi
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
         public double rndDouble(int min, int max)
         {
             return rnd.NextDouble() * (max - min) + min;
         }
-
+        /// <summary>
+        /// Vraci reseni kvadraticke rovnice. Pokud má reseni: True, pokud ne: False
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="c"></param>
+        /// <returns></returns>
         public bool HasQaudraticSolution(int a, int b, int c)
         {
 
