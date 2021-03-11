@@ -27,15 +27,18 @@ namespace BaseLib
         }
         /// <summary>
         /// Vraci reseni kvadraticke rovnice. Pokud má reseni: True, pokud ne: False
+        /// A zaroven vraci parametry x1, x2
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <param name="c"></param>
+        /// <param name="x1"></param>
+        /// <param name="x2"></param>
         /// <returns></returns>
-        public bool HasQaudraticSolution(int a, int b, int c)
+        public bool HasQaudraticSolution(int a, int b, int c, out double x1, out double x2)
         {
 
-            double d, x1, x2;
+            double d;
 
             d = b * b - 4 * a * c;
             if (d == 0)
@@ -61,6 +64,8 @@ namespace BaseLib
             else
             {
                 Console.WriteLine("Zadne reseni");
+                x1 = double.MaxValue;
+                x2 = double.MaxValue;
                 return false;
             }
                 
