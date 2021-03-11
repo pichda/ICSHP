@@ -27,7 +27,7 @@ namespace BaseLib
         }
         /// <summary>
         /// Vraci reseni kvadraticke rovnice. Pokud má reseni: True, pokud ne: False
-        /// A zaroven vraci parametry x1, x2
+        /// Vraci parametry x1, x2. Pokud nemá reseni, vrací tyto parametry s maximalni double hodnotou.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
