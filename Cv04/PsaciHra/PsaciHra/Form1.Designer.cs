@@ -96,7 +96,7 @@ namespace PsaciHra
             // 
             // difficultProgressBar
             // 
-            this.difficultProgressBar.Maximum = 800;
+            this.difficultProgressBar.Maximum = 5000;
             this.difficultProgressBar.Name = "difficultProgressBar";
             this.difficultProgressBar.Size = new System.Drawing.Size(100, 16);
             // 
