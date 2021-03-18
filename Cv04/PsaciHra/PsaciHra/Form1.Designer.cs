@@ -36,20 +36,19 @@ namespace PsaciHra
             this.missedLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.accuracyLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.difficultyLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.difficultProgressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // gameListBox
             // 
             this.gameListBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gameListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 120F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.gameListBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 100F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.gameListBox.FormattingEnabled = true;
-            this.gameListBox.ItemHeight = 181;
-            this.gameListBox.Items.AddRange(new object[] {
-            "asdf"});
+            this.gameListBox.ItemHeight = 152;
             this.gameListBox.Location = new System.Drawing.Point(0, 0);
+            this.gameListBox.MultiColumn = true;
             this.gameListBox.Name = "gameListBox";
             this.gameListBox.Size = new System.Drawing.Size(800, 173);
             this.gameListBox.TabIndex = 0;
@@ -95,17 +94,17 @@ namespace PsaciHra
             this.difficultyLabel.Text = "Difficulty";
             this.difficultyLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 800;
-            this.timer1.Tick += new System.EventHandler(this.Tick);
-            // 
             // difficultProgressBar
             // 
             this.difficultProgressBar.Maximum = 800;
             this.difficultProgressBar.Name = "difficultProgressBar";
             this.difficultProgressBar.Size = new System.Drawing.Size(100, 16);
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 800;
+            this.timer1.Tick += new System.EventHandler(this.Tick);
             // 
             // Form1
             // 

@@ -38,7 +38,8 @@ namespace PsaciHra
             {
                 Missed++;
             }
-            Accuracy = Correct / Missed * 100;
+            double acc = ((Double)Correct / ((Double)Correct + (Double)Missed))*100.0;
+            Accuracy = (int)acc;
             OnUpdatedStats();
         }
     }

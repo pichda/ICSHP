@@ -14,10 +14,16 @@ namespace PsaciHra
     {
         Random random = new Random();
         Stats stats = new Stats();
+
+        List<string> wordList = new List<string>();
+
         public Form1()
         {
             InitializeComponent();
             stats.UpdatedStats += Stats_UpdatedStats;
+            wordList.Add("AUTO");
+            wordList.Add("HONDA");
+            wordList.Add("CIVIC");
         }
 
         private void Stats_UpdatedStats(object sender, EventArgs e)
@@ -37,6 +43,7 @@ namespace PsaciHra
         {
             char c = (char)('A' + random.Next(0, 26));
             gameListBox.Items.Add((Keys)c);
+            // 60 limit pro slova
             if (gameListBox.Items.Count > 6)
             {
                 timer1.Stop();
