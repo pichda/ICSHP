@@ -51,6 +51,8 @@ namespace PsaciHra
                 gameListBox.Items.Add((Keys)slovo[i]);
             }
 
+            gameListBox.SelectedItem = 0;
+
             //maximum znaků na 40
             if (gameListBox.Items.Count > 40)
             {
@@ -74,6 +76,9 @@ namespace PsaciHra
         /// <param name="e"></param>
         private void gameListBox_KeyDown(object sender, KeyEventArgs e)
         {
+
+            gameListBox.SelectedItem = 0;
+
             if (gameListBox.Items.IndexOf(e.KeyCode)==0)
             {
                 gameListBox.Items.Remove(e.KeyCode);
