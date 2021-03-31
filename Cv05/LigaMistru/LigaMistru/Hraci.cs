@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace LigaMistru
 {
-    internal class Hraci
+    public class Hraci
     {
         public int Pocet { get; set; }
         private Hrac[] poleHracu = new Hrac[100];
@@ -13,6 +13,12 @@ namespace LigaMistru
             if (index > poleHracu.Length - 1)
             {
                 poleHracu[index] = null;
+                Pocet--;
+                for (int i = index; i < Pocet; i++)
+                {
+                    poleHracu[i] = poleHracu[i + 1];
+                }
+                
             }
         }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LigaMistru
 {
-    enum FotbalovyKlub
+    public enum FotbalovyKlub
     {
         None,
         FCPorto, 

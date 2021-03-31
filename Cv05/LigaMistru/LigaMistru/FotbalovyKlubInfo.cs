@@ -9,6 +9,7 @@ namespace LigaMistru
     class FotbalovyKlubInfo
     {
         public readonly int Pocet;
+        public readonly string[] NazvyKlubu = { "", "FC Porto", "Arsenal", "Real Madrid", "Chelsea", "Barcelona" };
 
         public FotbalovyKlubInfo()
         {
@@ -36,6 +37,27 @@ namespace LigaMistru
                     return "Barcelona";
                 default:
                     return "";
+            }
+        }
+
+        public FotbalovyKlub DejKlub(string Nazev)
+        {
+            switch (Nazev)
+            {
+                case "":
+                    return FotbalovyKlub.None;
+                case "FC Porto":
+                    return FotbalovyKlub.FCPorto;
+                case "Arsenal":
+                    return FotbalovyKlub.Arsenal;
+                case "Real Madrid":
+                    return FotbalovyKlub.RealMadrid;
+                case "Chelsea":
+                    return FotbalovyKlub.Chelsea;
+                case "Barcelona":
+                    return FotbalovyKlub.Barcelona;
+                default:
+                    return FotbalovyKlub.None;
             }
         }
     }

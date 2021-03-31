@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LigaMistru
 {
-    class Hrac
+    public class Hrac
     {
         public string Jmeno { get; set; }
         public FotbalovyKlub Klub { get; set; }
@@ -18,6 +18,5 @@ namespace LigaMistru
             Klub = klub;
             GolPocet = golPocet;
         }
-
     }
 }
