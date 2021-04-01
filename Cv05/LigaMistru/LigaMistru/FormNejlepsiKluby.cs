@@ -12,9 +12,24 @@ namespace LigaMistru
 {
     public partial class FormNejlepsiKluby : Form
     {
-        public FormNejlepsiKluby()
+        public Form1 f1;
+
+        FotbalovyKlubInfo fkInfo = new FotbalovyKlubInfo();
+        public FormNejlepsiKluby(Form1 form1)
         {
             InitializeComponent();
+
+            f1 = form1;
+            f1.hraci.NajdiNejlepsiKluby(out string kluby, out int maxGoly);
+
+            textBox2.Text = maxGoly.ToString();
+            textBox1.Lines = kluby.Split(';');
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

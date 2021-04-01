@@ -37,6 +37,17 @@ namespace LigaMistru
             }
         }
 
+        public void Uprav(int index, String jmeno, int golPocet, FotbalovyKlub klub)
+        {
+            if (index > poleHracu.Length - 1)
+            {
+                poleHracu[index].GolPocet = golPocet;
+                poleHracu[index].Jmeno = jmeno;
+                poleHracu[index].Klub = klub;
+
+            }
+        }
+
         public object this[int index]
         {
             get
@@ -59,11 +70,12 @@ namespace LigaMistru
             }
         }
 
-        public void NajdiNejlepsiKluby(out string[]kluby,out int[] golPocet)
+        public void NajdiNejlepsiKluby(out string kluby,out int golPocet)
         {
             FotbalovyKlubInfo klubyInfo = new FotbalovyKlubInfo();
 
             int[] goly = new int[klubyInfo.Pocet];
+            kluby = "";
 
             for (int i = 0; i < Pocet; i++)
             {
@@ -71,54 +83,50 @@ namespace LigaMistru
                 switch (poleHracu[i].Klub)
                 {
                     case FotbalovyKlub.None:
-                        goly[0] = poleHracu[i].GolPocet;
+                        goly[0] += poleHracu[i].GolPocet;
                         break;
                     case FotbalovyKlub.FCPorto:
-                        goly[1] = poleHracu[i].GolPocet;
+                        goly[1] += poleHracu[i].GolPocet;
                         break;
                     case FotbalovyKlub.Arsenal:
-                        goly[2] = poleHracu[i].GolPocet;
+                        goly[2] += poleHracu[i].GolPocet;
                         break;
                     case FotbalovyKlub.RealMadrid:
-                        goly[3] = poleHracu[i].GolPocet;
+                        goly[3] += poleHracu[i].GolPocet;
                         break;
                     case FotbalovyKlub.Chelsea:
-                        goly[4] = poleHracu[i].GolPocet;
+                        goly[4] += poleHracu[i].GolPocet;
                         break;
                     case FotbalovyKlub.Barcelona:
-                        goly[5] = poleHracu[i].GolPocet;
+                        goly[5] += poleHracu[i].GolPocet;
                         break;
                 }
                 
             }
-            int nejviceGolu = goly[0];
-            int index = 0; // index, ktery zmensuje druhy pruchod pole
+            int nejviceGolu = goly[1];
+            int index = 1; // index, ktery zmensuje druhy pruchod pole
 
             
-            for (int i = 1; i < goly.Length; i++)
+            for (int i = 2; i < goly.Length; i++)
             {
                 if (goly[i] > nejviceGolu)
                 {
                     nejviceGolu = goly[i];
-                    index = 0;
+                    index = i;
                 }
             }
 
-            List<int> listGoly = new List<int>();
-            List<string> listKluby = new List<string>();
 
             // kontrola, jestli ostatni tymy taky nemaji stejne max golu
             for (int i = index; i < goly.Length; i++)
             {
                 if (goly[i] == nejviceGolu)
                 {
-                    listKluby.Add(klubyInfo.DejNazev((FotbalovyKlub)i)); // i = index v enumu tymu
-                    listGoly.Add(goly[i]); // goly[i] = celkovy pocet golu tymu
+                    kluby += klubyInfo.DejNazev((FotbalovyKlub)i) + ";"; // i = index v enumu tymu
                 }
             }
 
-            golPocet = listGoly.ToArray();
-            kluby = listKluby.ToArray();
+            golPocet = nejviceGolu;
 
         }
         
