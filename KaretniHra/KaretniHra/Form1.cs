@@ -47,12 +47,15 @@ namespace KaretniHra
 
         private void Shuffle()
         {
-            for (int i = 0; i < 2; i++)
+
+
+
+            for (int i = 0; i < 100; i++)
             {
-                for (int j = 0; j < BalikKaret.Count / 2; j++)
+                for (int j = 0; j < BalikKaret.Count; j++)
                 {
-                    int prvniNahodnyPrvek = Util.randomCisloVRozmezi(0, BalikKaret.Count - 1);
-                    int druhyNahodnyPrvek = Util.randomCisloVRozmezi(0, BalikKaret.Count - 1);
+                    int prvniNahodnyPrvek = Util.randomCisloVRozmezi(0, BalikKaret.Count);
+                    int druhyNahodnyPrvek = Util.randomCisloVRozmezi(0, BalikKaret.Count);
 
                     Karta temp = BalikKaret[prvniNahodnyPrvek];
                     BalikKaret[prvniNahodnyPrvek] = BalikKaret[druhyNahodnyPrvek];
