@@ -27,30 +27,22 @@ namespace KaretniHra
 
             BalikKaret = new List<Karta>();
             HraciPoleKaret = new List<Karta>();
-            PocetKaretNaZacatku = 4;
+            PocetKaretNaZacatku = 6;
             inicializaceHry();
             StartHry();
             ZobrazKarty();
 
-            //PictureBox pctBox = new PictureBox();
-            //pctBox.Location = new System.Drawing.Point(200,200);
-            //pctBox.ClientSize = new Size(100, 150);
-            //pctBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            //pctBox.Image = Properties.Resources.kule_desitka;
         }
 
         public void inicializaceHry()
         {
             VytvoreniHracichKaret();
-            Shuffle();
+            ZamichaniKaret();
         }
 
-        private void Shuffle()
+        private void ZamichaniKaret()
         {
-
-
-
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < BalikKaret.Count; j++)
                 {
@@ -72,30 +64,37 @@ namespace KaretniHra
                 sedma.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 sedma.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
                 sedma.Click += new EventHandler(KliknutiNaKartu);
+
                 Karta osmicka = new Karta((ZnakyKaret)i, CisloKaret.osmicka);
                 osmicka.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 osmicka.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
                 osmicka.Click += new EventHandler(KliknutiNaKartu);
+
                 Karta devitka = new Karta((ZnakyKaret)i, CisloKaret.devitka);
                 devitka.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 devitka.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
                 devitka.Click += new EventHandler(KliknutiNaKartu);
+
                 Karta desitka = new Karta((ZnakyKaret)i, CisloKaret.desitka);
                 desitka.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 desitka.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
                 desitka.Click += new EventHandler(KliknutiNaKartu);
+
                 Karta spodek = new Karta((ZnakyKaret)i, CisloKaret.spodek);
                 spodek.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 spodek.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
                 spodek.Click += new EventHandler(KliknutiNaKartu);
+
                 Karta svrsek = new Karta((ZnakyKaret)i, CisloKaret.svrsek);
                 svrsek.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 svrsek.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
                 svrsek.Click += new EventHandler(KliknutiNaKartu);
+
                 Karta kral = new Karta((ZnakyKaret)i, CisloKaret.kral);
                 kral.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 kral.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
                 kral.Click += new EventHandler(KliknutiNaKartu);
+
                 Karta eso = new Karta((ZnakyKaret)i, CisloKaret.eso);
                 eso.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 eso.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
@@ -154,55 +153,19 @@ namespace KaretniHra
 
         private void ZobrazKarty()
         {
-            // 500 x 400
             int pocetKaret = Hrac1.KartyVRuce.Count;
-            if (pocetKaret % 2 == 0)
-            {
+            
                 for (int i = 0; i < pocetKaret; i++)
                 {
-                    if(i<= pocetKaret / 2)
-                    {
-                        Hrac1.KartyVRuce[i].Location = new System.Drawing.Point(500 - (25 * (pocetKaret - i)), 400);
+                    int polovina = pocetKaret / 2;
+
+                    int zacatekSouradnic = 500 - (25 * polovina);
+                        Hrac1.KartyVRuce[i].Location = new System.Drawing.Point(zacatekSouradnic+(25*i), 400);
                         this.Controls.Add(Hrac1.KartyVRuce[i]);
 
-                        //Hrac1.KartyVRuce[i].Visible = true;
-                        //Hrac1.KartyVRuce[i].BringToFront();
-                        //Hrac1.KartyVRuce[i].Refresh();
-
-                    }
-                    else
-                    {
-                        Hrac1.KartyVRuce[i].Location = new System.Drawing.Point(500 + (25 * (pocetKaret - i)), 400);
-                        this.Controls.Add(Hrac1.KartyVRuce[i]);
-                        //Hrac1.KartyVRuce[i].Visible = true;
-                    }
-                   
+                        ProtiHrac.KartyVRuce[i].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 10);
+                        this.Controls.Add(ProtiHrac.KartyVRuce[i]);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < pocetKaret; i++)
-                {
-                    if (i <= pocetKaret / 2)
-                    {
-                        Hrac1.KartyVRuce[i].Location = new System.Drawing.Point(500 - (25 * (pocetKaret - i)), 400);
-                        this.Controls.Add(Hrac1.KartyVRuce[i]);
-                        //Hrac1.KartyVRuce[i].Visible = true;
-                    }
-                    else if(i == (pocetKaret / 2) + 1)
-                    {
-                        Hrac1.KartyVRuce[i].Location = new System.Drawing.Point(500, 400);
-                        this.Controls.Add(Hrac1.KartyVRuce[i]);
-                        // Hrac1.KartyVRuce[i].Visible = true;
-                    }
-                    else
-                    {
-                        Hrac1.KartyVRuce[i].Location = new System.Drawing.Point(500 + (25 * (pocetKaret - i)), 400);
-                        this.Controls.Add(Hrac1.KartyVRuce[i]);
-                       // Hrac1.KartyVRuce[i].Visible = true;
-                    }
-                }
-            }
         }
 
         private void OnHoverZobrazKartu(object sender, EventArgs e)
