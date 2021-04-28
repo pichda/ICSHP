@@ -154,6 +154,7 @@ namespace GenericExercise.Tests
                 {
                     return aktualni.Value.Value;
                 }
+                aktualni = aktualni.Next;
             }
             throw new KeyNotFoundException();
         }
