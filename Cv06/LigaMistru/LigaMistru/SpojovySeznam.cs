@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LigaMistru
 {
     public class SpojovySeznam : IEnumerable, ICollection, IList
     {
-
         private PrvekSeznamu prvni;
         private PrvekSeznamu posledni;
         private int pocetPrvku;
@@ -20,7 +16,7 @@ namespace LigaMistru
             pocetPrvku = 0;
         }
 
-        internal class PrvekSeznamu
+        public class PrvekSeznamu
         {
             public Object Data { get; set; }
             public PrvekSeznamu Dalsi { get; set; }
@@ -35,8 +31,8 @@ namespace LigaMistru
         }
 
         public object this[int index]
-        { 
-            get => throw new NotImplementedException(); set => throw new NotImplementedException(); 
+        {
+            get => Get(index); set => Set(index, value);
         }
 
         public int Count => pocetPrvku;
@@ -51,15 +47,16 @@ namespace LigaMistru
 
         public int Add(object value)
         {
-            if(value == null)
+            if (value == null)
             {
                 return -1;
             }
-            else if (pocetPrvku == 0)
+
+            if (pocetPrvku == 0)
             {
                 PrvekSeznamu prvek = new PrvekSeznamu(value);
-                prvni = (PrvekSeznamu) value;
-                posledni = (PrvekSeznamu)value;
+                prvni = (PrvekSeznamu)prvek;
+                posledni = (PrvekSeznamu)prvek;
                 pocetPrvku++;
                 return pocetPrvku;
             }
@@ -67,9 +64,9 @@ namespace LigaMistru
             {
                 PrvekSeznamu prvek = new PrvekSeznamu(value);
                 prvek.Data = value;
-                prvek.Dalsi = prvni;
-                prvni.Predchozi = prvek;
-                prvni = prvek;
+                prvek.Predchozi = posledni;
+                posledni.Dalsi = prvek;
+                posledni = prvek;
 
                 pocetPrvku++;
                 return pocetPrvku;
@@ -82,66 +79,230 @@ namespace LigaMistru
             posledni = null;
             pocetPrvku = 0;
         }
+
         public bool Contains(object value)
         {
-            if (Count == 0)
+            if (Count == 0 || value==null)
             {
-                throw new NullReferenceException();
+                return false;
             }
 
-            PrvekSeznamu aktualni = DejPrvni();
-            while(aktualni!=null)
+            PrvekSeznamu aktualni = prvni;
+            while (aktualni != null)
             {
-                if (value.Equals(aktualni))
+                if (value.Equals(aktualni.Data))
                 {
                     return true;
                 }
                 aktualni = aktualni.Dalsi;
             }
             return false;
-            throw new NotImplementedException();
         }
-        //TODO
+
         public void CopyTo(Array array, int index)
         {
-            throw new NotImplementedException();
+            if(array==null)
+            {
+                throw new ArgumentNullException("neni nastaveno pole");
+            }
+            if (array.Length - index < Count)
+            {
+                // array.length = 20; Count = 20; index = 10
+                throw new ArgumentOutOfRangeException("pole neni dostatecne velke"); 
+            }
+            PrvekSeznamu aktualni = prvni;
+            while (aktualni != null)
+            {
+                array.SetValue(aktualni.Data, index);
+                index++;
+                aktualni = aktualni.Dalsi;
+            }
         }
-        //TODO
-        public IEnumerator GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-        //TODO
+
+
         public int IndexOf(object value)
         {
-            throw new NotImplementedException();
+            if (Count == 0)
+            {
+                return -1;
+            }
+
+            int index = 0;
+            PrvekSeznamu aktualni = prvni;
+            while (aktualni != null)
+            {
+                if (value.Equals(aktualni.Data))
+                {
+                    return index;
+                }
+                aktualni = aktualni.Dalsi;
+                index++;
+            }
+            return -1;
         }
 
-        //TODO
-        //public object Get(int index)
-        //{
-        //    if ()
-        //    {
+        public object Get(int index)
+        {
+            if (index >= Count)
+            {
+                throw new ArgumentOutOfRangeException("Index je mimo rozsah");
+            }
+            else
+            {
+                PrvekSeznamu aktualni = prvni;
+                for (int i = 0; i < index; i++)
+                {
+                    aktualni = aktualni.Dalsi;
+                }
+                return aktualni.Data;
+            }
+        }
 
-        //    }
-        //}
-        //TODO
+        public void Set(int index, object value)
+        {
+            if (index >= Count)
+            {
+                throw new ArgumentOutOfRangeException("Index je mimo rozsah");
+            }
+            else
+            {
+                PrvekSeznamu aktualni = prvni;
+                for (int i = 0; i < index; i++)
+                {
+                    aktualni = aktualni.Dalsi;
+                }
+                aktualni.Data = value;
+            }
+        }
+
         public void Insert(int index, object value)
         {
-            throw new NotImplementedException();
+            if (index > Count)
+            {
+                throw new ArgumentOutOfRangeException("Index je mimo rozsah");
+            }
+            else
+            {
+                PrvekSeznamu novyPrvek = new PrvekSeznamu(value);
+                if (index == Count)
+                {
+                    novyPrvek.Predchozi = posledni;
+                    posledni.Dalsi = novyPrvek;
+                    posledni = novyPrvek;
+
+                    pocetPrvku++;
+                }
+                else if (index == 0)
+                {
+                    Add(value);
+                }
+                else
+                {
+                    // [0] [1] [stary] [stary2]
+                    PrvekSeznamu aktualni = prvni;
+                    for (int i = 0; i < index; i++)
+                    {
+                        aktualni = aktualni.Dalsi;
+                    }
+
+                    // [1].dalsi a [1].predchozi
+                    novyPrvek.Dalsi = aktualni;
+                    novyPrvek.Predchozi = aktualni.Predchozi;
+
+                    // [0].dalsi
+                    novyPrvek.Predchozi.Dalsi = novyPrvek;
+                    // [stary].predchozi
+                    aktualni.Predchozi = novyPrvek;
+
+                    aktualni = novyPrvek;
+                    pocetPrvku++;
+                }
+            }
         }
-        //TODO
+
         public void Remove(object value)
         {
-            throw new NotImplementedException();
+
+            if (Count != 0)
+            {
+                PrvekSeznamu aktualni = prvni;
+                while (aktualni != null)
+                {
+                    if (value.Equals(aktualni.Data))
+                    {
+                        if (aktualni ==prvni)
+                        {
+                            prvni = prvni.Dalsi;
+                            pocetPrvku--;
+                        }
+                        else if (aktualni == posledni)
+                        {
+                            posledni = posledni.Predchozi;
+                            pocetPrvku--;
+                        }
+                        else
+                        {
+                            // [0] [nalezeny] [2]
+
+                            // [0]->[2]
+                            aktualni.Predchozi.Dalsi = aktualni.Dalsi;
+                            // [0]<-[2]
+                            aktualni.Dalsi.Predchozi = aktualni.Predchozi;
+                            pocetPrvku--;
+                        }
+                    }
+                    aktualni = aktualni.Dalsi;
+                }
+            }
         }
-        //TODO
+
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            if (index >= Count) 
+            {
+                throw new ArgumentOutOfRangeException("Index je mimo rozsah");
+            }
+            else
+            {
+                if (index == 0)
+                {
+                    prvni = prvni.Dalsi;
+                    pocetPrvku--;
+                }
+                else if (index == Count-1)
+                {
+                    posledni = posledni.Predchozi;
+                    pocetPrvku--;
+                }
+                else // [0] [nalezeny] [2]
+                {
+                    PrvekSeznamu aktualni = prvni;
+                    for (int i = 0; i < index; i++)
+                    {
+                        aktualni = aktualni.Dalsi;
+                    }
+                    // [0]->[2]
+                    aktualni.Predchozi.Dalsi = aktualni.Dalsi;
+                    // [0]<-[2]
+                    aktualni.Dalsi.Predchozi = aktualni.Predchozi;
+                    pocetPrvku--;
+                }
+            }
         }
 
-        
+        public IEnumerator GetEnumerator()
+        {
+            PrvekSeznamu aktualni = prvni;
+            while (aktualni != null)
+            {
+                yield return aktualni.Data;
+                aktualni = aktualni.Dalsi;
+            }
+        }
 
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
     }
 }

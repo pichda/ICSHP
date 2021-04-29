@@ -24,5 +24,13 @@ namespace LigaMistru
             Klub = FotbalovyKlub.None;
             GolPocet = 0;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Hrac hrac &&
+                   Jmeno == hrac.Jmeno &&
+                   Klub == hrac.Klub &&
+                   GolPocet == hrac.GolPocet;
+        }
     }
 }
