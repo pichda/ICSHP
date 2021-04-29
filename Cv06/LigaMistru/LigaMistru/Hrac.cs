@@ -25,12 +25,22 @@ namespace LigaMistru
             GolPocet = 0;
         }
 
+        public override string ToString()
+        {
+            return $"{Jmeno};{Klub};{GolPocet}";
+        }
+
         public override bool Equals(object obj)
         {
             return obj is Hrac hrac &&
                    Jmeno == hrac.Jmeno &&
                    Klub == hrac.Klub &&
                    GolPocet == hrac.GolPocet;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

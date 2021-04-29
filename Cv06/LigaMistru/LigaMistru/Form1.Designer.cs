@@ -41,6 +41,9 @@ namespace LigaMistru
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -60,7 +63,7 @@ namespace LigaMistru
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(421, 230);
+            this.dataGridView1.Size = new System.Drawing.Size(421, 282);
             this.dataGridView1.TabIndex = 0;
             // 
             // Column1
@@ -81,7 +84,7 @@ namespace LigaMistru
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(13, 250);
+            this.listBox1.Location = new System.Drawing.Point(13, 301);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(514, 82);
             this.listBox1.TabIndex = 1;
@@ -146,7 +149,7 @@ namespace LigaMistru
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(441, 187);
+            this.button7.Location = new System.Drawing.Point(440, 272);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(86, 23);
             this.button7.TabIndex = 8;
@@ -154,11 +157,37 @@ namespace LigaMistru
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
+            // button8
+            // 
+            this.button8.Location = new System.Drawing.Point(440, 214);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(86, 23);
+            this.button8.TabIndex = 9;
+            this.button8.Text = "Načíst";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(440, 243);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(86, 23);
+            this.button9.TabIndex = 10;
+            this.button9.Text = "Uložit";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(539, 359);
+            this.ClientSize = new System.Drawing.Size(542, 395);
+            this.Controls.Add(this.button9);
+            this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
@@ -188,6 +217,9 @@ namespace LigaMistru
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         public System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

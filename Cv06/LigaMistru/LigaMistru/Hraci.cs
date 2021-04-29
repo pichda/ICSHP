@@ -5,69 +5,86 @@ namespace LigaMistru
 {
     public class Hraci
     {
-        public int Pocet { get; set; }
-        private Hrac[] poleHracu = new Hrac[100];
+        private SpojovySeznam seznamHracu;
+
+        public Hraci()
+        {
+            seznamHracu = new SpojovySeznam();
+        }
 
         public void Vymaz(int index)
         {
-            if (index > poleHracu.Length - 1)
-            {
-                poleHracu[index] = null;
-                Pocet--;
-                for (int i = index; i < Pocet; i++)
-                {
-                    poleHracu[i] = poleHracu[i + 1];
-                }
-                
-            }
+            seznamHracu.RemoveAt(index);
         }
 
         public void Pridej(Hrac hrac)
         {
-            if (Pocet > poleHracu.Length - 1)
+            seznamHracu.Add(hrac);
+        }
+
+        public Array DejVsechnyHrace(Array vracenePole)
+        {
+            seznamHracu.CopyTo(vracenePole, 0);
+            return vracenePole;
+        }
+
+        public Hrac[] DejVybraneHrace(int[] vybraneKluby)
+        {
+            Hrac[] temp = new Hrac[Size()];
+            int indexVybranychHracu = 0;
+
+            for (int i = 0; i < Size(); i++)
             {
-                Array.Resize(ref poleHracu, poleHracu.Length * 2);
-                poleHracu[Pocet] = hrac;
-                Pocet++;
+                for (int j = 0; j < vybraneKluby.Length; j++)
+                {
+                    Hrac docasnyHrac = (Hrac)seznamHracu[i];
+                    if (docasnyHrac.Klub == (FotbalovyKlub)vybraneKluby[j])
+                    {
+                        temp[indexVybranychHracu] = docasnyHrac;
+                        indexVybranychHracu++;
+                        break;
+                    }
+                } 
+            }
+
+            if(indexVybranychHracu == 0)
+            {
+                return null;
             }
             else
             {
-                poleHracu[Pocet] = hrac;
-                Pocet++;
+                Hrac[] vybranyHraci = new Hrac[indexVybranychHracu];
+                temp.CopyTo(vybranyHraci, 0);
+                return vybranyHraci;
             }
         }
 
         public void Uprav(int index, String jmeno, int golPocet, FotbalovyKlub klub)
         {
-            if (index > poleHracu.Length - 1)
-            {
-                poleHracu[index].GolPocet = golPocet;
-                poleHracu[index].Jmeno = jmeno;
-                poleHracu[index].Klub = klub;
+            Hrac upravaHrace = (Hrac)seznamHracu.Get(index);
 
-            }
+            upravaHrace.GolPocet = golPocet;
+            upravaHrace.Jmeno = jmeno;
+            upravaHrace.Klub = klub;
+
+            seznamHracu.Set(index, upravaHrace);
         }
 
         public object this[int index]
         {
             get
             {
-                if (index >= 0 && index <= Pocet)
-                {
-                    return poleHracu[index];
-                }
-                else
-                {
-                    return null;
-                }
+                return seznamHracu.Get(index);
             }
             set
             {
-                if (index > Pocet && index < poleHracu.Length - 1)
-                {
-                    poleHracu[index] = (Hrac)value;
-                }
+                seznamHracu.Set(index, value);
             }
+        }
+
+        public int Size()
+        {
+            return seznamHracu.Count;
         }
 
         public void NajdiNejlepsiKluby(out string kluby,out int golPocet)
@@ -77,28 +94,29 @@ namespace LigaMistru
             int[] goly = new int[klubyInfo.Pocet];
             kluby = "";
 
-            for (int i = 0; i < Pocet; i++)
+            for (int i = 0; i < Size(); i++)
             {
+                Hrac pomocna = (Hrac)seznamHracu.Get(i);
 
-                switch (poleHracu[i].Klub)
+                switch (pomocna.Klub)
                 {
                     case FotbalovyKlub.None:
-                        goly[0] += poleHracu[i].GolPocet;
+                        goly[0] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.FCPorto:
-                        goly[1] += poleHracu[i].GolPocet;
+                        goly[1] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.Arsenal:
-                        goly[2] += poleHracu[i].GolPocet;
+                        goly[2] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.RealMadrid:
-                        goly[3] += poleHracu[i].GolPocet;
+                        goly[3] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.Chelsea:
-                        goly[4] += poleHracu[i].GolPocet;
+                        goly[4] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.Barcelona:
-                        goly[5] += poleHracu[i].GolPocet;
+                        goly[5] += pomocna.GolPocet;
                         break;
                 }
                 
@@ -137,28 +155,28 @@ namespace LigaMistru
             int[] goly = new int[klubyInfo.Pocet];
             kluby = new FotbalovyKlub[20];
 
-            for (int i = 0; i < Pocet; i++)
+            for (int i = 0; i < Size(); i++)
             {
-
-                switch (poleHracu[i].Klub)
+                Hrac pomocna = (Hrac)seznamHracu.Get(i);
+                switch (pomocna.Klub)
                 {
                     case FotbalovyKlub.None:
-                        goly[0] += poleHracu[i].GolPocet;
+                        goly[0] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.FCPorto:
-                        goly[1] += poleHracu[i].GolPocet;
+                        goly[1] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.Arsenal:
-                        goly[2] += poleHracu[i].GolPocet;
+                        goly[2] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.RealMadrid:
-                        goly[3] += poleHracu[i].GolPocet;
+                        goly[3] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.Chelsea:
-                        goly[4] += poleHracu[i].GolPocet;
+                        goly[4] += pomocna.GolPocet;
                         break;
                     case FotbalovyKlub.Barcelona:
-                        goly[5] += poleHracu[i].GolPocet;
+                        goly[5] += pomocna.GolPocet;
                         break;
                 }
 
