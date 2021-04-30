@@ -28,6 +28,7 @@ namespace KaretniHra
 
             Hrac1 = new Hrac("Hráč",true);
             ProtiHrac = new Hrac("Počítač", false);
+            HrajeHrac = true;
 
             BalikKaret = new List<Karta>();
             HraciPoleKaret = new List<Karta>();
@@ -129,10 +130,11 @@ namespace KaretniHra
                 ProtiHrac.PridejKartuDoRuky(kartaProtihrace);
                 OdeberPosledniKartuZBaliku();
             }
-            HraciPoleKaret.Add(BalikKaret[BalikKaret.Count - 1]);
+            Karta kartaDoPole = BalikKaret[BalikKaret.Count - 1];
+            HraciPoleKaret.Add(kartaDoPole);
             OdeberPosledniKartuZBaliku();
-            HraciPoleKaret[0].Image = Util.DejObrazekKarty(HraciPoleKaret[0]);
-            HraciPoleKaret[0].Visible = true;
+            kartaDoPole.Image = Util.DejObrazekKarty(kartaDoPole);
+            kartaDoPole.Visible = true;
             pictureBoxHrane.Image = HraciPoleKaret[0].Image;
             pictureBoxHrane.SizeMode = PictureBoxSizeMode.StretchImage;
 
@@ -140,6 +142,10 @@ namespace KaretniHra
             if (HraciPoleKaret[HraciPoleKaret.Count - 1].CisloKarty == CisloKaret.svrsek)
             {
                 AktualniZnak = BalikKaret[BalikKaret.Count - 1].Znak;
+            }
+            else
+            {
+                posledniHrana = kartaDoPole;
             }
         }
 
@@ -366,7 +372,7 @@ namespace KaretniHra
         /// <returns></returns>
         public bool JePenalizacniKarta(Karta karta)
         {
-            if (karta.CisloKarty != CisloKaret.eso || karta.CisloKarty != CisloKaret.sedma)
+            if (karta.CisloKarty == CisloKaret.eso || karta.CisloKarty == CisloKaret.sedma)
             {
                 return true;
             }
@@ -400,7 +406,7 @@ namespace KaretniHra
             }
         }
         /// <summary>
-        /// Event, ktery zvoli barvu karty na kule
+        /// Event, ktery zvoli barvu karty na kule, zavola metodu PrekresliKarty, schovejVybiraniZnaku a tahProtiHrace
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -410,9 +416,10 @@ namespace KaretniHra
             HrajeHrac = false;
             PrekresliKarty();
             schovejVybiraniZnaku();
+            tahProtiHrace();
         }
         /// <summary>
-        ///  Event, ktery zvoli barvu karty na listy
+        ///  Event, ktery zvoli barvu karty na listy, zavola metodu PrekresliKarty, schovejVybiraniZnaku a tahProtiHrace
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -422,9 +429,10 @@ namespace KaretniHra
             HrajeHrac = false;
             PrekresliKarty();
             schovejVybiraniZnaku();
+            tahProtiHrace();
         }
         /// <summary>
-        ///  Event, ktery zvoli barvu karty na srdce
+        ///  Event, ktery zvoli barvu karty na srdce, zavola metodu PrekresliKarty, schovejVybiraniZnaku a tahProtiHrace
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -434,9 +442,10 @@ namespace KaretniHra
             HrajeHrac = false;
             PrekresliKarty();
             schovejVybiraniZnaku();
+            tahProtiHrace();
         }
         /// <summary>
-        ///  Event, ktery zvoli barvu karty na zaludy
+        ///  Event, ktery zvoli barvu karty na zaludy, zavola metodu PrekresliKarty, schovejVybiraniZnaku a tahProtiHrace
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -446,6 +455,7 @@ namespace KaretniHra
             HrajeHrac = false;
             PrekresliKarty();
             schovejVybiraniZnaku();
+            tahProtiHrace();
         }
 
         private void schovejVybiraniZnaku()
@@ -479,12 +489,18 @@ namespace KaretniHra
                 Hrac1.OdeberKartu(karta);
                 HraciPoleKaret.Add(karta);
                 posledniHrana = karta;
+
+                pictureBoxHrane.Image = karta.Image;
             }
             else
             {
                 ProtiHrac.OdeberKartu(karta);
                 HraciPoleKaret.Add(karta);
                 posledniHrana = karta;
+
+                karta.Image = Util.DejObrazekKarty(karta);
+                karta.Visible = true;
+                pictureBoxHrane.Image = karta.Image;
             }
             
         }
