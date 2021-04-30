@@ -31,6 +31,7 @@ namespace KaretniHra
         {
             this.pictureBoxBalik = new System.Windows.Forms.PictureBox();
             this.pictureBoxHrane = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxBalik)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxHrane)).BeginInit();
             this.SuspendLayout();
@@ -55,11 +56,21 @@ namespace KaretniHra
             this.pictureBoxHrane.TabIndex = 14;
             this.pictureBoxHrane.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(843, 282);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "label1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 561);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBoxHrane);
             this.Controls.Add(this.pictureBoxBalik);
             this.Name = "Form1";
@@ -74,6 +85,7 @@ namespace KaretniHra
         #endregion
         private System.Windows.Forms.PictureBox pictureBoxBalik;
         private System.Windows.Forms.PictureBox pictureBoxHrane;
+        private System.Windows.Forms.Label label1;
     }
 }
 
