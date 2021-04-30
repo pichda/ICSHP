@@ -17,7 +17,7 @@ namespace KaretniHra
 
         public int PocetKaretNaZacatku { get; set; } // pocet karet, kterych se rozda kazdemu hraci
 
-        public ZnakyKaret AktualniZnak { get; set; }  // aktulani znak/barva
+        public ZnakyKaret AktualniZnak { get; set; }  // aktulani znak/barva, ktery se vyuziva jen, kdyz je svrsek na hracim poli
 
         public bool HrajeHrac { get; set; }
         public int PocetSedmicek { get; set; }  // pocet sedmicek, ktere se zahrali. Scita se za kazdou sedmu, ktera se hrala po minule sedmicce.
@@ -35,7 +35,7 @@ namespace KaretniHra
             PocetSedmicek = 0;
             inicializaceHry();
             StartHry();
-            ZobrazKarty();
+            PrekresliKarty();
         }
 
         public void inicializaceHry()
@@ -210,7 +210,7 @@ namespace KaretniHra
         /// <summary>
         /// funkce, ktera prekresli karty na hraci pole (Form1)
         /// </summary>
-        private void ZobrazKarty()
+        private void PrekresliKarty()
         {
             int pocetKaret = Hrac1.KartyVRuce.Count;
 
@@ -241,7 +241,7 @@ namespace KaretniHra
             Karta karta = sender as Karta;
             if (karta.JeHrace)
             {
-                ZobrazKarty();
+                PrekresliKarty();
                 //TODO: bringtoback (vyzkouset podobnou metodu k bringtofront, misto prekresleni vsech karet)
             }
         }
@@ -253,48 +253,62 @@ namespace KaretniHra
                 Karta karta = sender as Karta;
                 if (karta.JeHrace)
                 {
-                    if (posledniHrana.CisloKarty == CisloKaret.sedma)
+                    if (JePenalizacniKarta(karta))
                     {
-                        if(karta.CisloKarty == CisloKaret.sedma)
+                        if (posledniHrana.CisloKarty == CisloKaret.sedma)
                         {
-                            Hrac1.OdeberKartu(karta);
-                            PocetSedmicek++;
-                            HrajeHrac = false;
-                        }
-                    }
-                    else if(posledniHrana.CisloKarty == CisloKaret.eso)
-                    {
-                        if(Hrac1.MaKartu(CisloKaret.eso))
-                        {
-                            if (karta.CisloKarty == CisloKaret.eso)
+                            if (karta.CisloKarty == CisloKaret.sedma)
                             {
-                                Hrac1.OdeberKartu(karta);
+                                nastaveniKaret(karta);
+                                PocetSedmicek++;
                                 HrajeHrac = false;
                             }
                         }
-                        else
+                        else if (posledniHrana.CisloKarty == CisloKaret.eso)
                         {
-                            HrajeHrac = false;
+                            if (Hrac1.MaKartu(CisloKaret.eso))
+                            {
+                                if (karta.CisloKarty == CisloKaret.eso)
+                                {
+                                    nastaveniKaret(karta);
+                                    HrajeHrac = false;
+                                }
+                            }
+                            else
+                            {
+                                HrajeHrac = false;
+                            }
                         }
                     }
                     else
                     {
                         if(karta.CisloKarty== CisloKaret.svrsek)
                         {
-                            // disable pictureboxbalik
-                            // disable ostatni karty
-                            // zobrazeni tlacitek se znaky barvy
+                            zakazHraciInterakci();
+                            zobrazVybiraniZnaku();
+                            nastaveniKaret(karta);
                         }
-
-                        if(karta.CisloKarty == posledniHrana.CisloKarty || karta.Znak == posledniHrana.Znak)
+                        else
                         {
-
+                            if (karta.CisloKarty == posledniHrana.CisloKarty || karta.Znak == posledniHrana.Znak)
+                            {
+                                nastaveniKaret(karta);
+                            }
                         }
                     }
 
                     if (Hrac1.DejPocetKaret() == 0)
                     {
                         //TODO: vypis na obrazovku "YOU WIN", prehod po 5ti sekundach na druhy form (menu, kde bude nova hra nebo nacti hru)
+                    }
+                    else
+                    {
+                        PrekresliKarty();
+                        if (!HrajeHrac)
+                        {
+                            tahProtiHrace();
+                            zakazHraciInterakci();
+                        }
                     }
                 }
             }
@@ -385,6 +399,111 @@ namespace KaretniHra
                 karta.Enabled = true;
             }
         }
+        /// <summary>
+        /// Event, ktery zvoli barvu karty na kule
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            AktualniZnak = ZnakyKaret.kule;
+            HrajeHrac = false;
+            PrekresliKarty();
+            schovejVybiraniZnaku();
+        }
+        /// <summary>
+        ///  Event, ktery zvoli barvu karty na listy
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            AktualniZnak = ZnakyKaret.list;
+            HrajeHrac = false;
+            PrekresliKarty();
+            schovejVybiraniZnaku();
+        }
+        /// <summary>
+        ///  Event, ktery zvoli barvu karty na srdce
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            AktualniZnak = ZnakyKaret.srdce;
+            HrajeHrac = false;
+            PrekresliKarty();
+            schovejVybiraniZnaku();
+        }
+        /// <summary>
+        ///  Event, ktery zvoli barvu karty na zaludy
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            AktualniZnak = ZnakyKaret.zalud;
+            HrajeHrac = false;
+            PrekresliKarty();
+            schovejVybiraniZnaku();
+        }
 
+        private void schovejVybiraniZnaku()
+        {
+            label1.Visible = false;
+            pictureBox1.Enabled = false;
+            pictureBox1.Visible = false;
+            pictureBox2.Enabled = false;
+            pictureBox2.Visible = false;
+            pictureBox3.Enabled = false;
+            pictureBox3.Visible = false;
+            pictureBox4.Enabled = false;
+            pictureBox4.Visible = false;
+        }
+        private void zobrazVybiraniZnaku()
+        {
+            label1.Visible = true;
+            pictureBox1.Visible = true;
+            pictureBox1.Enabled = true;
+            pictureBox2.Visible = true;
+            pictureBox2.Enabled = true;
+            pictureBox3.Visible = true;
+            pictureBox3.Enabled = true;
+            pictureBox4.Visible = true;
+            pictureBox4.Enabled = true;
+        }
+        private void nastaveniKaret(Karta karta)
+        {
+            if (karta.JeHrace)
+            {
+                Hrac1.OdeberKartu(karta);
+                HraciPoleKaret.Add(karta);
+                posledniHrana = karta;
+            }
+            else
+            {
+                ProtiHrac.OdeberKartu(karta);
+                HraciPoleKaret.Add(karta);
+                posledniHrana = karta;
+            }
+            
+        }
+
+        private void zakazHraciInterakci()
+        {
+            foreach (Karta k in Hrac1.KartyVRuce)
+            {
+                k.Enabled = false;
+            }
+            pictureBoxBalik.Enabled = false;
+        }
+        private void uvolniHraciInterakci()
+        {
+            foreach (Karta k in Hrac1.KartyVRuce)
+            {
+                k.Enabled = true;
+            }
+            pictureBoxBalik.Enabled = true;
+        }
     }
 }

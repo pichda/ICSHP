@@ -63,6 +63,16 @@ namespace KaretniHra.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap kule {
+            get {
+                object obj = ResourceManager.GetObject("kule", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap kule_desitka {
             get {
                 object obj = ResourceManager.GetObject("kule_desitka", resourceCulture);
@@ -143,6 +153,16 @@ namespace KaretniHra.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap listy {
+            get {
+                object obj = ResourceManager.GetObject("listy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap listy_desitka {
             get {
                 object obj = ResourceManager.GetObject("listy_desitka", resourceCulture);
@@ -216,6 +236,16 @@ namespace KaretniHra.Properties {
         internal static System.Drawing.Bitmap listy_svrsek {
             get {
                 object obj = ResourceManager.GetObject("listy_svrsek", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap srdce {
+            get {
+                object obj = ResourceManager.GetObject("srdce", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -306,6 +336,16 @@ namespace KaretniHra.Properties {
         internal static System.Drawing.Bitmap zada {
             get {
                 object obj = ResourceManager.GetObject("zada", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap zalud {
+            get {
+                object obj = ResourceManager.GetObject("zalud", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

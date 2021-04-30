@@ -186,5 +186,17 @@
   <ItemGroup>
     <None Include="karty\zalud_svrsek.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="karty\kule.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="karty\listy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="karty\srdce.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="karty\zalud.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
