@@ -32,47 +32,87 @@ namespace KaretniHra
             return false;
         }
 
-        public bool MaKartuAJeHratelna(CisloKaret cisloKarty, ZnakyKaret aktualniZnak)
+        public int MaKartuAJeHratelna(CisloKaret cisloKarty, ZnakyKaret aktualniZnak)
         {
             foreach (var karta in KartyVRuce)
             {
                 if (karta.CisloKarty == cisloKarty && karta.Znak ==aktualniZnak)
                 {
-                    return true;
+                    return KartyVRuce.IndexOf(karta);
                 }
             }
-            return false;
+            return -1;
         }
 
-        /// <summary>
-        /// Vraci true, pokud hrac ma aspon jednu kartu, ktera neni svrsek, eso, sedma a lze zahrat
-        /// </summary>
-        /// <returns></returns>
-        public bool MaNormalniKartu(Karta kartaNaPlose)
+        public ZnakyKaret VratZnak(ZnakyKaret zmenenyZnak)
         {
+            int[] pole = new int[4];
+
             foreach (var karta in KartyVRuce)
             {
-                if (karta.CisloKarty != CisloKaret.eso || karta.CisloKarty != CisloKaret.sedma || karta.CisloKarty != CisloKaret.svrsek)
+                if(karta.Znak != zmenenyZnak)
                 {
-                    if(karta.CisloKarty == kartaNaPlose.CisloKarty || karta.Znak == kartaNaPlose.Znak)
+                    switch (karta.Znak)
                     {
-                        return true;
+                        case ZnakyKaret.list:
+                            pole[0]++;
+                            break;
+                        case ZnakyKaret.kule:
+                            pole[1]++;
+                            break;
+                        case ZnakyKaret.srdce:
+                            pole[2]++;
+                            break;
+                        case ZnakyKaret.zalud:
+                            pole[3]++;
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
-            return false;
+            int maxValue = pole.Max();
+            for (int i = 0; i < 4; i++)
+            {
+                if (pole[i] == maxValue)
+                {
+                    switch (i)
+                    {
+                        case 0:
+                            return ZnakyKaret.list;
+                        case 1:
+                            return ZnakyKaret.kule;
+                        case 2:
+                            return ZnakyKaret.srdce;
+                        case 3:
+                            return ZnakyKaret.zalud;
+                        default:
+                            break;
+                    }
+                }
+            }
+            throw new NotImplementedException();
+
         }
 
-        public bool MaNormalniKartu()
+        /// <summary>
+        /// Vraci index prvni nalezene karty, pokud hrac ma aspon jednu kartu, ktera neni svrsek, eso, sedma a lze zahrat
+        /// jinak -1, kdyz neni zadna hratelna normalni karta
+        /// </summary>
+        /// <returns></returns>
+        public int MaNormalniKartu(Karta kartaNaPlose, ZnakyKaret aktualniZnak)
         {
             foreach (var karta in KartyVRuce)
             {
                 if (karta.CisloKarty != CisloKaret.eso || karta.CisloKarty != CisloKaret.sedma || karta.CisloKarty != CisloKaret.svrsek)
                 {
-                    return true;
+                    if(karta.CisloKarty == kartaNaPlose.CisloKarty || karta.Znak == aktualniZnak)
+                    {
+                        return KartyVRuce.IndexOf(karta);
+                    }
                 }
             }
-            return false;
+            return -1;
         }
 
 
