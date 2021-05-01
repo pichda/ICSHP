@@ -104,7 +104,7 @@ namespace KaretniHra
         {
             foreach (var karta in KartyVRuce)
             {
-                if (karta.CisloKarty != CisloKaret.eso || karta.CisloKarty != CisloKaret.sedma || karta.CisloKarty != CisloKaret.svrsek)
+                if (karta.CisloKarty != CisloKaret.eso && karta.CisloKarty != CisloKaret.sedma && karta.CisloKarty != CisloKaret.svrsek)
                 {
                     if(karta.CisloKarty == kartaNaPlose.CisloKarty || karta.Znak == aktualniZnak)
                     {
@@ -127,11 +127,13 @@ namespace KaretniHra
             {
                 karta.JeHrace = true;
                 karta.Image = Util.DejObrazekKarty(karta);
+                karta.Visible = true;
             }
             else
             {
                 karta.JeHrace = false;
                 karta.Image = Properties.Resources.zada;
+                karta.Visible = true;
             }
             KartyVRuce.Add(karta);
         }

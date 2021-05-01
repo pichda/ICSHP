@@ -14,7 +14,7 @@ namespace KaretniHra
         public List<Karta> HraciPoleKaret { get; set; } // karty v poli
 
         public Karta posledniHrana { get; set; } // posledni zahrana karta
-
+        public bool JeNevyzvednutaPenalizace { get; set; }
         public int PocetKaretNaZacatku { get; set; } // pocet karet, kterych se rozda kazdemu hraci
 
         public ZnakyKaret AktualniZnak { get; set; }  // aktulani znak/barva, ktery se vyuziva jen, kdyz je svrsek na hracim poli
@@ -29,6 +29,7 @@ namespace KaretniHra
             Hrac1 = new Hrac("Hráč", true);
             ProtiHrac = new Hrac("Počítač", false);
             HrajeHrac = true;
+            JeNevyzvednutaPenalizace = false;
 
             BalikKaret = new List<Karta>();
             HraciPoleKaret = new List<Karta>();
@@ -143,11 +144,17 @@ namespace KaretniHra
             if (HraciPoleKaret[HraciPoleKaret.Count - 1].CisloKarty == CisloKaret.svrsek)
             {
                 AktualniZnak = BalikKaret[BalikKaret.Count - 1].Znak;
+                posledniHrana = kartaDoPole;
+                pictureBox5.Image = Util.DejObrazekZnaku(AktualniZnak);
             }
             else
             {
+                AktualniZnak = kartaDoPole.Znak;
                 posledniHrana = kartaDoPole;
+                pictureBox5.Image = Util.DejObrazekZnaku(AktualniZnak);
             }
+
+            pictureBox5.Visible = true;
         }
 
         private void OdeberPosledniKartuZBaliku()
@@ -163,7 +170,7 @@ namespace KaretniHra
         private void LiznutiKarty(object sender, EventArgs e)
         {
             //TODO: animace karty/ vykresleni karet prozatim
-            if (HrajeHrac)
+            if (HrajeHrac && button1.Visible!=true)
             {
                 if (BalikKaret.Count == 0)
                 {
@@ -178,11 +185,29 @@ namespace KaretniHra
                 {
                     for (int i = 0; i < PocetSedmicek * 2; i++)
                     {
-                        Karta kartaProHrace = BalikKaret[BalikKaret.Count - 1];
-                        Hrac1.PridejKartuDoRuky(kartaProHrace);
-                        OdeberPosledniKartuZBaliku();
+                        if(HraciPoleKaret.Count == 1 && BalikKaret.Count == 0)
+                        {
+                            // nic nedelej, protoze nelze uz pridat kartu do ruky
+                        }
+                        else
+                        {
+                            Karta kartaProHrace = BalikKaret[BalikKaret.Count - 1];
+                            Hrac1.PridejKartuDoRuky(kartaProHrace);
+                            OdeberPosledniKartuZBaliku();
+
+                            if (BalikKaret.Count == 0)
+                            {
+                                while (HraciPoleKaret.Count > 0)
+                                {
+                                    BalikKaret.Add(HraciPoleKaret[0]);
+                                    HraciPoleKaret.RemoveAt(0);
+                                }
+                                ZamichaniKaret();
+                            }
+                        }
                     }
                     PocetSedmicek = 0;
+                    JeNevyzvednutaPenalizace = false;
                 }
                 else
                 {
@@ -192,6 +217,7 @@ namespace KaretniHra
                 }
                 HrajeHrac = false;
                 prekresliKarty();
+                tahProtiHrace();
             }
         }
 
@@ -274,10 +300,7 @@ namespace KaretniHra
             Karta karta = sender as Karta;
             if (karta.JeHrace)
             {
-                //karta.SendToBack();
-                prekresliKarty(); // rozhodne neni efektivni/optimalizovany
-
-                //TODO: bringtoback (vyzkouset podobnou metodu k bringtofront, misto prekresleni vsech karet)
+                prekresliKarty();
             }
         }
 
@@ -288,16 +311,14 @@ namespace KaretniHra
                 Karta karta = sender as Karta;
                 if (karta.JeHrace)
                 {
-                    if (JePenalizacniKarta(karta))
+                    if (JeNevyzvednutaPenalizace)
                     {
-                        if (posledniHrana.CisloKarty == CisloKaret.sedma)
+                        if (karta.CisloKarty == CisloKaret.sedma && posledniHrana.CisloKarty == CisloKaret.sedma)
                         {
-                            if (karta.CisloKarty == CisloKaret.sedma)
-                            {
-                                nastaveniKaret(karta);
-                                PocetSedmicek++;
-                                HrajeHrac = false;
-                            }
+                            nastaveniKaret(karta);
+                            PocetSedmicek++;
+                            HrajeHrac = false;
+                            JeNevyzvednutaPenalizace = true;
                         }
                         else if (posledniHrana.CisloKarty == CisloKaret.eso)
                         {
@@ -307,11 +328,8 @@ namespace KaretniHra
                                 {
                                     nastaveniKaret(karta);
                                     HrajeHrac = false;
+                                    JeNevyzvednutaPenalizace = true;
                                 }
-                            }
-                            else
-                            {
-                                HrajeHrac = false;
                             }
                         }
                     }
@@ -323,29 +341,35 @@ namespace KaretniHra
                             zobrazVybiraniZnaku();
                             nastaveniKaret(karta);
                         }
+                        else if (karta.CisloKarty == CisloKaret.sedma && (posledniHrana.CisloKarty == CisloKaret.sedma || AktualniZnak == karta.Znak))
+                        {
+                            nastaveniKaret(karta);
+                            PocetSedmicek++;
+                            HrajeHrac = false;
+                            JeNevyzvednutaPenalizace = true;
+                        }
+                        else if (karta.CisloKarty == CisloKaret.eso && (posledniHrana.CisloKarty == CisloKaret.eso || AktualniZnak == karta.Znak))
+                        {
+                            nastaveniKaret(karta);
+                            HrajeHrac = false;
+                            JeNevyzvednutaPenalizace = true;
+                        }
                         else
                         {
-                            if (posledniHrana.CisloKarty == CisloKaret.svrsek)
+                            if (karta.CisloKarty == posledniHrana.CisloKarty || karta.Znak == AktualniZnak)
                             {
-                                if (karta.Znak == AktualniZnak)
-                                {
-                                    nastaveniKaret(karta);
-                                    HrajeHrac = false;
-                                }
-                            }
-                            else
-                            {
-                                if (karta.CisloKarty == posledniHrana.CisloKarty || karta.Znak == posledniHrana.Znak)
-                                {
-                                    nastaveniKaret(karta);
-                                    HrajeHrac = false;
-                                }
+                                nastaveniKaret(karta);
+                                HrajeHrac = false;
                             }
                         }
                     }
 
                     if (Hrac1.DejPocetKaret() == 0)
                     {
+                        prekresliKarty();
+                        zakazHraciInterakci();
+                        label2.Text = "YOU WIN";
+                        label2.Visible = true;
                         //TODO: vypis na obrazovku "YOU WIN", prehod po 5ti sekundach na druhy form (menu, kde bude nova hra nebo nacti hru)
                     }
                     else
@@ -353,8 +377,8 @@ namespace KaretniHra
                         if (!HrajeHrac)
                         {
                             prekresliKarty();
-                            tahProtiHrace();
                             zakazHraciInterakci();
+                            tahProtiHrace();
                         }
                     }
                 }
@@ -365,7 +389,7 @@ namespace KaretniHra
         {
             if (!HrajeHrac)
             {
-                if (JePenalizacniKarta(posledniHrana))
+                if (JeNevyzvednutaPenalizace)
                 {
                     if (posledniHrana.CisloKarty == CisloKaret.sedma)
                     {
@@ -374,11 +398,13 @@ namespace KaretniHra
                             nastaveniKaret(ProtiHrac.DejPrvniNalezenouKartu(CisloKaret.sedma));
                             PocetSedmicek++;
                             HrajeHrac = true;
+                            JeNevyzvednutaPenalizace = true;
                         }
                         else
                         {
                             liznutiKartyProPocitac();
                             HrajeHrac = true;
+                            JeNevyzvednutaPenalizace = false;
                         }
                     }
                     else if (posledniHrana.CisloKarty == CisloKaret.eso)
@@ -389,11 +415,15 @@ namespace KaretniHra
                             {
                                 nastaveniKaret(ProtiHrac.DejPrvniNalezenouKartu(CisloKaret.eso));
                                 HrajeHrac = true;
+                                JeNevyzvednutaPenalizace = true;
+                                button1.Visible = true;
                             }
                         }
                         else
                         {
                             HrajeHrac = true;
+                            JeNevyzvednutaPenalizace = false;
+                            Console.WriteLine("test");
                         }
                     }
                 }
@@ -409,25 +439,29 @@ namespace KaretniHra
                         {
                             nastaveniKaret(ProtiHrac.DejKartuNaIndexu(sedmaIndex));
                             HrajeHrac = true;
+                            PocetSedmicek++;
+                            JeNevyzvednutaPenalizace = true;
                         }
                         else if (esoIndex > -1)
                         {
                             nastaveniKaret(ProtiHrac.DejKartuNaIndexu(esoIndex));
                             HrajeHrac = true;
+                            JeNevyzvednutaPenalizace = true;
+                            button1.Visible = true;
                         }
                         else if (svrsekIndex > -1)
                         {
-                            nastaveniKaret(ProtiHrac.DejKartuNaIndexu(svrsekIndex));
                             AktualniZnak = ProtiHrac.VratZnak(AktualniZnak);
+                            nastaveniKaret(ProtiHrac.DejKartuNaIndexu(svrsekIndex));
                             HrajeHrac = true;
                         }
                         else
                         {
                             int normalniKartaIndex = ProtiHrac.MaNormalniKartu(posledniHrana, AktualniZnak);
-                            if (normalniKartaIndex>-1)
+                            if (normalniKartaIndex > -1)
                             {
-                                        nastaveniKaret(ProtiHrac.DejKartuNaIndexu(normalniKartaIndex));
-                                        HrajeHrac = true;
+                                nastaveniKaret(ProtiHrac.DejKartuNaIndexu(normalniKartaIndex));
+                                HrajeHrac = true;
                             }
                             else
                             {
@@ -437,17 +471,64 @@ namespace KaretniHra
                     }
                     else
                     {
-                        if (ProtiHrac.MaNormalniKartu(posledniHrana, AktualniZnak))
+                        int normalniKartaIndex = ProtiHrac.MaNormalniKartu(posledniHrana, AktualniZnak);
+                        if (normalniKartaIndex > -1)
                         {
-
+                            nastaveniKaret(ProtiHrac.DejKartuNaIndexu(normalniKartaIndex));
+                            HrajeHrac = true;
                         }
                         else
                         {
+                            int sedmaIndex = ProtiHrac.MaKartuAJeHratelna(CisloKaret.sedma, AktualniZnak);
+                            int esoIndex = ProtiHrac.MaKartuAJeHratelna(CisloKaret.eso, AktualniZnak);
+                            int svrsekIndex = ProtiHrac.MaKartuAJeHratelna(CisloKaret.svrsek, AktualniZnak);
 
+                            if (esoIndex > -1)
+                            {
+                                nastaveniKaret(ProtiHrac.DejKartuNaIndexu(esoIndex));
+                                HrajeHrac = true;
+                                JeNevyzvednutaPenalizace = true;
+                                button1.Visible = true;
+                            }
+                            else if (svrsekIndex > -1)
+                            {
+                                AktualniZnak = ProtiHrac.VratZnak(AktualniZnak);
+                                nastaveniKaret(ProtiHrac.DejKartuNaIndexu(svrsekIndex));
+                                HrajeHrac = true;
+                            }
+                            else if (sedmaIndex > -1)
+                            {
+                                nastaveniKaret(ProtiHrac.DejKartuNaIndexu(sedmaIndex));
+                                HrajeHrac = true;
+                                PocetSedmicek++;
+                                JeNevyzvednutaPenalizace = true;
+                            }
+                            else
+                            {
+                                liznutiKartyProPocitac();
+                            }
                         }
-                        // hraj normalne
                     }
                 }
+                if (ProtiHrac.DejPocetKaret() == 0)
+                {
+                    prekresliKarty();
+                    zakazHraciInterakci();
+                    label2.Text = "YOU LOSE";
+                    label2.Visible = true;
+
+                    foreach (var karta in Hrac1.KartyVRuce)
+                    {
+                        karta.Visible = false;
+                    }
+                    //TODO: vypis na obrazovku "YOU WIN", prehod po 5ti sekundach na druhy form (menu, kde bude nova hra nebo nacti hru)
+                }
+                else
+                {
+                    prekresliKartyProtihrace();
+                    uvolniHraciInterakci();
+                }
+                
             }
         }
 
@@ -592,6 +673,7 @@ namespace KaretniHra
                 AktualniZnak = karta.Znak;
 
                 pictureBoxHrane.Image = karta.Image;
+                pictureBox5.Image = Util.DejObrazekZnaku(AktualniZnak);
             }
             else
             {
@@ -601,8 +683,8 @@ namespace KaretniHra
                 AktualniZnak = karta.Znak;
 
                 karta.Image = Util.DejObrazekKarty(karta);
-                karta.Visible = true;
                 pictureBoxHrane.Image = karta.Image;
+                pictureBox5.Image = Util.DejObrazekZnaku(AktualniZnak);
             }
         }
 
@@ -622,6 +704,15 @@ namespace KaretniHra
                 k.Enabled = true;
             }
             pictureBoxBalik.Enabled = true;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            JeNevyzvednutaPenalizace = false;
+            HrajeHrac = false;
+            button1.Visible = false;
+            tahProtiHrace();
+            
         }
     }
 }
