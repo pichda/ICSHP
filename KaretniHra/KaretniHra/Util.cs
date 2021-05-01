@@ -101,6 +101,23 @@ namespace KaretniHra
             }
             throw new ApplicationException("chyba");
         }
+        public static System.Drawing.Bitmap DejObrazekZnaku(ZnakyKaret aktualniZnak)
+        {
+            switch (aktualniZnak)
+            {
+                case ZnakyKaret.kule:
+                    return Properties.Resources.kule;
+                case ZnakyKaret.srdce:
+                    return Properties.Resources.srdce;
+                case ZnakyKaret.zalud:
+                    return Properties.Resources.zalud;
+                case ZnakyKaret.list:
+                    return Properties.Resources.listy;
+                default: throw new ArgumentException();
+            }
+
+        }
+
         public static int randomCisloVRozmezi(int min, int max)
         {
             return rnd.Next(min, max);

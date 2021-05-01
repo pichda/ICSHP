@@ -26,7 +26,7 @@ namespace KaretniHra
         {
             InitializeComponent();
 
-            Hrac1 = new Hrac("Hráč",true);
+            Hrac1 = new Hrac("Hráč", true);
             ProtiHrac = new Hrac("Počítač", false);
             HrajeHrac = true;
 
@@ -36,7 +36,7 @@ namespace KaretniHra
             PocetSedmicek = 0;
             inicializaceHry();
             StartHry();
-            PrekresliKarty();
+            prekresliKarty();
         }
 
         public void inicializaceHry()
@@ -153,6 +153,7 @@ namespace KaretniHra
         {
             BalikKaret.Remove(BalikKaret[BalikKaret.Count - 1]);
         }
+
         /// <summary>
         /// Pokud neni zadna karta v baliku, tak se pridaji karty z hraciho pole do baliku a zamicha se balik.
         /// </summary>
@@ -160,73 +161,98 @@ namespace KaretniHra
         /// <param name="e"></param>
         private void LiznutiKarty(object sender, EventArgs e)
         {
-            if(BalikKaret.Count == 0)
+            //TODO: animace karty/ vykresleni karet prozatim
+            if (HrajeHrac)
             {
-                while (HraciPoleKaret.Count > 0)
+                if (BalikKaret.Count == 0)
                 {
-                    BalikKaret.Add(HraciPoleKaret[0]);
-                    HraciPoleKaret.RemoveAt(0);
-                }
-                ZamichaniKaret();
-            }
-            else
-            {
-                if (HrajeHrac)
-                {
-                    if (PocetSedmicek > 0)
+                    while (HraciPoleKaret.Count > 0)
                     {
-                        for (int i = 0; i < PocetSedmicek*2; i++)
-                        {
-                            Karta kartaProHrace = BalikKaret[BalikKaret.Count - 1];
-                            Hrac1.PridejKartuDoRuky(kartaProHrace);
-                            OdeberPosledniKartuZBaliku();
-                        }
-                        PocetSedmicek = 0;
+                        BalikKaret.Add(HraciPoleKaret[0]);
+                        HraciPoleKaret.RemoveAt(0);
                     }
-                    else
+                    ZamichaniKaret();
+                }
+                if (PocetSedmicek > 0)
+                {
+                    for (int i = 0; i < PocetSedmicek * 2; i++)
                     {
                         Karta kartaProHrace = BalikKaret[BalikKaret.Count - 1];
                         Hrac1.PridejKartuDoRuky(kartaProHrace);
                         OdeberPosledniKartuZBaliku();
                     }
-                    HrajeHrac = false;
+                    PocetSedmicek = 0;
                 }
                 else
                 {
-                    if (PocetSedmicek > 0)
+                    Karta kartaProHrace = BalikKaret[BalikKaret.Count - 1];
+                    Hrac1.PridejKartuDoRuky(kartaProHrace);
+                    OdeberPosledniKartuZBaliku();
+                }
+                HrajeHrac = false;
+                prekresliKarty();
+            }
+        }
+
+        private void liznutiKartyProPocitac()
+        {
+            if (!HrajeHrac)
+            {
+                if (BalikKaret.Count == 0)
+                {
+                    while (HraciPoleKaret.Count > 0)
                     {
-                        for (int i = 0; i < PocetSedmicek * 2; i++)
-                        {
-                            Karta karta = BalikKaret[BalikKaret.Count - 1];
-                            ProtiHrac.PridejKartuDoRuky(karta);
-                            OdeberPosledniKartuZBaliku();
-                        }
-                        PocetSedmicek = 0;
+                        BalikKaret.Add(HraciPoleKaret[0]);
+                        HraciPoleKaret.RemoveAt(0);
                     }
-                    else
+                    ZamichaniKaret();
+                }
+
+                if (PocetSedmicek > 0)
+                {
+                    for (int i = 0; i < PocetSedmicek * 2; i++)
                     {
                         Karta karta = BalikKaret[BalikKaret.Count - 1];
                         ProtiHrac.PridejKartuDoRuky(karta);
                         OdeberPosledniKartuZBaliku();
                     }
-                    HrajeHrac = true;
+                    PocetSedmicek = 0;
                 }
+                else
+                {
+                    Karta karta = BalikKaret[BalikKaret.Count - 1];
+                    ProtiHrac.PridejKartuDoRuky(karta);
+                    OdeberPosledniKartuZBaliku();
+                }
+                HrajeHrac = true;
+                prekresliKartyProtihrace();
             }
         }
+
         /// <summary>
         /// funkce, ktera prekresli karty na hraci pole (Form1)
         /// </summary>
-        private void PrekresliKarty()
+        private void prekresliKarty()
         {
-            int pocetKaret = Hrac1.KartyVRuce.Count;
+            int pocetKaret = Hrac1.DejPocetKaret();
 
             for (int i = 0; i < pocetKaret; i++)
             {
                 int polovina = pocetKaret / 2;
-
                 int zacatekSouradnic = 500 - (25 * polovina);
+
                 Hrac1.KartyVRuce[i].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 400);
                 this.Controls.Add(Hrac1.KartyVRuce[i]);
+            }
+        }
+
+        private void prekresliKartyProtihrace()
+        {
+            int pocetKaretProtiHrace = ProtiHrac.DejPocetKaret();
+            for (int i = 0; i < pocetKaretProtiHrace; i++)
+            {
+                int polovina = pocetKaretProtiHrace / 2;
+                int zacatekSouradnic = 500 - (25 * polovina);
 
                 ProtiHrac.KartyVRuce[i].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 10);
                 this.Controls.Add(ProtiHrac.KartyVRuce[i]);
@@ -247,7 +273,9 @@ namespace KaretniHra
             Karta karta = sender as Karta;
             if (karta.JeHrace)
             {
-                PrekresliKarty();
+                //karta.SendToBack();
+                prekresliKarty(); // rozhodne neni efektivni/optimalizovany
+
                 //TODO: bringtoback (vyzkouset podobnou metodu k bringtofront, misto prekresleni vsech karet)
             }
         }
@@ -288,7 +316,7 @@ namespace KaretniHra
                     }
                     else
                     {
-                        if(karta.CisloKarty== CisloKaret.svrsek)
+                        if (karta.CisloKarty == CisloKaret.svrsek)
                         {
                             zakazHraciInterakci();
                             zobrazVybiraniZnaku();
@@ -299,6 +327,7 @@ namespace KaretniHra
                             if (karta.CisloKarty == posledniHrana.CisloKarty || karta.Znak == posledniHrana.Znak)
                             {
                                 nastaveniKaret(karta);
+                                HrajeHrac = false;
                             }
                         }
                     }
@@ -309,9 +338,9 @@ namespace KaretniHra
                     }
                     else
                     {
-                        PrekresliKarty();
                         if (!HrajeHrac)
                         {
+                            prekresliKarty();
                             tahProtiHrace();
                             zakazHraciInterakci();
                         }
@@ -330,41 +359,138 @@ namespace KaretniHra
                     {
                         if (ProtiHrac.MaKartu(CisloKaret.sedma))
                         {
-
+                            nastaveniKaret(ProtiHrac.DejPrvniNalezenouKartu(CisloKaret.sedma));
+                            PocetSedmicek++;
+                            HrajeHrac = true;
                         }
                         else
                         {
-
+                            liznutiKartyProPocitac();
+                            HrajeHrac = true;
                         }
                     }
-                    else
+                    else if (posledniHrana.CisloKarty == CisloKaret.eso)
                     {
-
+                        if (ProtiHrac.MaKartu(CisloKaret.eso))
+                        {
+                            if (ProtiHrac.MaKartu(CisloKaret.eso))
+                            {
+                                nastaveniKaret(ProtiHrac.DejPrvniNalezenouKartu(CisloKaret.eso));
+                                HrajeHrac = true;
+                            }
+                        }
+                        else
+                        {
+                            HrajeHrac = true;
+                        }
                     }
-
                 }
                 else
                 {
                     if (Hrac1.DejPocetKaret() == 1)
                     {
-                        if (ProtiHrac.MaKartu(CisloKaret.sedma))
+                        // pokud hral svrska
+                        if(posledniHrana.CisloKarty == CisloKaret.svrsek)
                         {
-                            HrajeHrac = true;
+                            if (ProtiHrac.MaKartu(CisloKaret.svrsek))
+                            {
+                                nastaveniKaret(ProtiHrac.DejPrvniNalezenouKartu(CisloKaret.svrsek));
+                                HrajeHrac = true;
+                                
+                                // zahraj svrska
+                            }else if(ProtiHrac.MaKartuAJeHratelna(CisloKaret.sedma, AktualniZnak))
+                            {
+                                // zahraj sedmu
+                            }
+                            else if (ProtiHrac.MaKartuAJeHratelna(CisloKaret.eso, AktualniZnak))
+                            {
+                                // zahraj eso
+                            }
+                            else
+                            {
+                                // normalne zahraj
+                            }
                         }
                         else
                         {
-                            //     if()
+                            // pokud hral cokoliv jineho ale ma posledni kartu
                         }
+                        // zahral svrska a ma posledni kartu, tak taky zmen barvu, jinak zkus zahrat sedmu, eso
                     }
                     else
                     {
-
+                        // normalne hraj, pokud nema posledni kartu a nehrozi vyhra pro hrace
                     }
 
-                    // if(ProtiHrac.MaKartu())
+                    if (!ProtiHrac.MaNormalniKartu(posledniHrana))
+                    {
+                        // nema normalni kartu ale ma svrska - ma normalni kartu, nema normalni kartu
+                        if (ProtiHrac.MaKartu(CisloKaret.svrsek))
+                        {
+                            if (ProtiHrac.DejPocetKaret() == 2)
+                            {
+                                if (ProtiHrac.DejPrvniKartu().CisloKarty == CisloKaret.svrsek)
+                                {
+                                    AktualniZnak = ProtiHrac.DejKartuNaIndexu(1).Znak;
+                                    nastaveniKaret(ProtiHrac.DejKartuNaIndexu(0));
+                                    HrajeHrac = true;
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                        }
+                        nastaveniKaret(karta);
+                    }
+                    else
+                    {
+                        if (karta.CisloKarty == posledniHrana.CisloKarty || karta.Znak == posledniHrana.Znak)
+                        {
+                            nastaveniKaret(karta);
+                            HrajeHrac = false;
+                        }
+                    }
+                    //vykresli karty pocitace
                 }
+
+
+                //if (JePenalizacniKarta(posledniHrana))
+                //{
+                //    if (posledniHrana.CisloKarty == CisloKaret.sedma)
+                //    {
+                //        if (ProtiHrac.MaKartu(CisloKaret.sedma))
+                //        {
+                //        }
+                //        else
+                //        {
+                //        }
+                //    }
+                //    else
+                //    {
+                //    }
+                //}
+                //else
+                //{
+                //    if (Hrac1.DejPocetKaret() == 1)
+                //    {
+                //        if (ProtiHrac.MaKartu(CisloKaret.sedma))
+                //        {
+                //            HrajeHrac = true;
+                //        }
+                //        else
+                //        {
+                //            //     if()
+                //        }
+                //    }
+                //    else
+                //    {
+                //    }
+
+                // if(ProtiHrac.MaKartu())
             }
         }
+
         /// <summary>
         /// Vraci true, pokud karta v parametru je sedma nebo eso.
         /// </summary>
@@ -405,6 +531,7 @@ namespace KaretniHra
                 karta.Enabled = true;
             }
         }
+
         /// <summary>
         /// Event, ktery zvoli barvu karty na kule, zavola metodu PrekresliKarty, schovejVybiraniZnaku a tahProtiHrace
         /// </summary>
@@ -414,10 +541,12 @@ namespace KaretniHra
         {
             AktualniZnak = ZnakyKaret.kule;
             HrajeHrac = false;
-            PrekresliKarty();
+            uvolniHraciInterakci();
             schovejVybiraniZnaku();
+            pictureBox5.Image = Util.DejObrazekZnaku(AktualniZnak);
             tahProtiHrace();
         }
+
         /// <summary>
         ///  Event, ktery zvoli barvu karty na listy, zavola metodu PrekresliKarty, schovejVybiraniZnaku a tahProtiHrace
         /// </summary>
@@ -427,10 +556,12 @@ namespace KaretniHra
         {
             AktualniZnak = ZnakyKaret.list;
             HrajeHrac = false;
-            PrekresliKarty();
+            uvolniHraciInterakci();
             schovejVybiraniZnaku();
+            pictureBox5.Image = Util.DejObrazekZnaku(AktualniZnak);
             tahProtiHrace();
         }
+
         /// <summary>
         ///  Event, ktery zvoli barvu karty na srdce, zavola metodu PrekresliKarty, schovejVybiraniZnaku a tahProtiHrace
         /// </summary>
@@ -440,10 +571,12 @@ namespace KaretniHra
         {
             AktualniZnak = ZnakyKaret.srdce;
             HrajeHrac = false;
-            PrekresliKarty();
+            uvolniHraciInterakci();
             schovejVybiraniZnaku();
+            pictureBox5.Image = Util.DejObrazekZnaku(AktualniZnak);
             tahProtiHrace();
         }
+
         /// <summary>
         ///  Event, ktery zvoli barvu karty na zaludy, zavola metodu PrekresliKarty, schovejVybiraniZnaku a tahProtiHrace
         /// </summary>
@@ -453,8 +586,9 @@ namespace KaretniHra
         {
             AktualniZnak = ZnakyKaret.zalud;
             HrajeHrac = false;
-            PrekresliKarty();
+            uvolniHraciInterakci();
             schovejVybiraniZnaku();
+            pictureBox5.Image = Util.DejObrazekZnaku(AktualniZnak);
             tahProtiHrace();
         }
 
@@ -470,6 +604,7 @@ namespace KaretniHra
             pictureBox4.Enabled = false;
             pictureBox4.Visible = false;
         }
+
         private void zobrazVybiraniZnaku()
         {
             label1.Visible = true;
@@ -482,6 +617,7 @@ namespace KaretniHra
             pictureBox4.Visible = true;
             pictureBox4.Enabled = true;
         }
+
         private void nastaveniKaret(Karta karta)
         {
             if (karta.JeHrace)
@@ -502,7 +638,6 @@ namespace KaretniHra
                 karta.Visible = true;
                 pictureBoxHrane.Image = karta.Image;
             }
-            
         }
 
         private void zakazHraciInterakci()
@@ -513,6 +648,7 @@ namespace KaretniHra
             }
             pictureBoxBalik.Enabled = false;
         }
+
         private void uvolniHraciInterakci()
         {
             foreach (Karta k in Hrac1.KartyVRuce)

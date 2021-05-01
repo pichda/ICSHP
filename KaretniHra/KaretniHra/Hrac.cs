@@ -31,6 +31,19 @@ namespace KaretniHra
             }
             return false;
         }
+
+        public bool MaKartuAJeHratelna(CisloKaret cisloKarty, ZnakyKaret aktualniZnak)
+        {
+            foreach (var karta in KartyVRuce)
+            {
+                if (karta.CisloKarty == cisloKarty && karta.Znak ==aktualniZnak)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Vraci true, pokud hrac ma aspon jednu kartu, ktera neni svrsek, eso, sedma a lze zahrat
         /// </summary>
@@ -49,6 +62,19 @@ namespace KaretniHra
             }
             return false;
         }
+
+        public bool MaNormalniKartu()
+        {
+            foreach (var karta in KartyVRuce)
+            {
+                if (karta.CisloKarty != CisloKaret.eso || karta.CisloKarty != CisloKaret.sedma || karta.CisloKarty != CisloKaret.svrsek)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         public int DejPocetKaret()
         {
@@ -73,7 +99,33 @@ namespace KaretniHra
         public void OdeberKartu(Karta karta)
         {
             karta.JeHrace = false;
+            karta.Visible = false;
             KartyVRuce.Remove(karta);
+        }
+
+        public Karta DejPrvniNalezenouKartu(CisloKaret cisloKarty)
+        {
+            foreach (var karta in KartyVRuce)
+            {
+                if (karta.CisloKarty == cisloKarty)
+                {
+                    return karta;
+                }
+                
+            }
+                throw new ArgumentException();
+        }
+        public Karta DejPrvniKartu()
+        {
+            return KartyVRuce[0];
+        }
+        public Karta DejKartuNaIndexu(int index)
+        {
+            if (index > DejPocetKaret()-1)
+            {
+                throw new IndexOutOfRangeException();
+            }
+            return KartyVRuce[index];
         }
     }
 }
