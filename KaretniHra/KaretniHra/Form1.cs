@@ -8,6 +8,7 @@ namespace KaretniHra
     {
         //TODO: mozny refactor codu (predelani vlastnosti BalikKaret, HraciPoleKaret na tridu Karty, kde budou funkce add a remove)
 
+        public FormMenu FormMenu { get; set; }
         public Hrac Hrac1 { get; set; }
         public Hrac ProtiHrac { get; set; }
         public List<Karta> BalikKaret { get; set; } // karty, které si hrac bere, pokud nemuze kartu zahrat
@@ -22,9 +23,10 @@ namespace KaretniHra
         public bool HrajeHrac { get; set; }
         public int PocetSedmicek { get; set; }  // pocet sedmicek, ktere se zahrali. Scita se za kazdou sedmu, ktera se hrala po minule sedmicce.
 
-        public Form1()
+        public Form1(FormMenu menu)
         {
             InitializeComponent();
+            FormMenu = menu;
 
             Hrac1 = new Hrac("Hráč", true);
             ProtiHrac = new Hrac("Počítač", false);
@@ -713,6 +715,25 @@ namespace KaretniHra
             button1.Visible = false;
             tahProtiHrace();
             
+        }
+        /// <summary>
+        /// zavre hru
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+        /// <summary>
+        /// prejde do menu a ukonci rozehranou hru
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FormMenu.Show();
+            this.Close();
         }
     }
 }
