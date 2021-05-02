@@ -3,6 +3,7 @@ using System;
 
 namespace KaretniHra
 {
+    [Serializable]
     public class Hra
     {
         public Hra(Hrac hrac1, Hrac protiHrac, List<Karta> balikKaret, List<Karta> hraciPoleKaret, Karta posledniHrana, bool jeNevyzvednutaPenalizace, int pocetKaretNaZacatku, ZnakyKaret aktualniZnak, bool hrajeHrac, int pocetSedmicek)

@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace KaretniHra
 {
+    [Serializable]
     public class Hrac
     {
         // TODO: refactoring (pridani metody add, ...)

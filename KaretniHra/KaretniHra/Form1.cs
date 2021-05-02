@@ -38,12 +38,15 @@ namespace KaretniHra
         }
         public Form1(FormMenu menu, Hra ulozenaHra)
         {
+            InitializeComponent();
             FormMenu = menu;
             GrafikaKaret = new List<PictureBoxKarta>();
             novaHra = ulozenaHra;
+            VytvoreniGrafikyKaret();
 
-            inicializaceHry();
-            StartHry();
+            pictureBoxHrane.Image = Util.DejObrazekKarty(novaHra.posledniHrana);
+            pictureBoxHrane.SizeMode = PictureBoxSizeMode.StretchImage;
+
             prekresliKarty();
             prekresliKartyProtihrace();
         }
@@ -72,10 +75,6 @@ namespace KaretniHra
 
         private void VytvoreniHracichKaret()
         {
-            // list, kule, srdce, zalud
-            // sedma, osmicka, devitka, desitka, spodek, svrsek, kral, eso
-            
-
             for (int i = 0; i < 4; i++)
             {
 
@@ -143,6 +142,60 @@ namespace KaretniHra
                 novaHra.BalikKaret.Add(svrsek);
                 novaHra.BalikKaret.Add(kral);
                 novaHra.BalikKaret.Add(eso);
+            }
+        }
+        private void VytvoreniGrafikyKaret()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+
+                PictureBoxKarta sedmaPctBox = new PictureBoxKarta();
+                sedmaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                sedmaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                sedmaPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(sedmaPctBox);
+
+                PictureBoxKarta osmickaPctBox = new PictureBoxKarta();
+                osmickaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                osmickaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                osmickaPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(osmickaPctBox);
+
+                PictureBoxKarta devitkaPctBox = new PictureBoxKarta();
+                devitkaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                devitkaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                devitkaPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(devitkaPctBox);
+
+                PictureBoxKarta desitkaPctBox = new PictureBoxKarta();
+                desitkaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                desitkaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                desitkaPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(desitkaPctBox);
+
+                PictureBoxKarta spodekPctBox = new PictureBoxKarta();
+                spodekPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                spodekPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                spodekPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(spodekPctBox);
+
+                PictureBoxKarta svrsekPctBox = new PictureBoxKarta();
+                svrsekPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                svrsekPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                svrsekPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(svrsekPctBox);
+
+                PictureBoxKarta kralPctBox = new PictureBoxKarta();
+                kralPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                kralPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                kralPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(kralPctBox);
+
+                PictureBoxKarta esoPctBox = new PictureBoxKarta();
+                esoPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                esoPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                esoPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(esoPctBox);
             }
         }
 
@@ -778,7 +831,6 @@ namespace KaretniHra
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-
             IFormatter formatter = new BinaryFormatter();
             Stream stream = new FileStream("save.bin", FileMode.Create, FileAccess.Write);
 
