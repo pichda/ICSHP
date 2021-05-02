@@ -7,12 +7,12 @@ using System.Windows.Forms;
 
 namespace KaretniHra
 {
-    
     public partial class Form1 : Form
     {
         public FormMenu FormMenu { get; set; }
         public Hra novaHra { get; set; }
         public List<PictureBoxKarta> GrafikaKaret { get; set; }
+
         public Form1(FormMenu menu)
         {
             InitializeComponent();
@@ -24,8 +24,8 @@ namespace KaretniHra
             bool hrajeHrac = true;
             bool jeNevyzvednutaPenalizace = false;
 
-            List<Karta>  balikKaret = new List<Karta>();
-            List<Karta>  hraciPoleKaret = new List<Karta>();
+            List<Karta> balikKaret = new List<Karta>();
+            List<Karta> hraciPoleKaret = new List<Karta>();
             int pocetKaretNaZacatku = 6;
             int pocetSedmicek = 0;
 
@@ -36,6 +36,7 @@ namespace KaretniHra
             prekresliKarty();
             prekresliKartyProtihrace();
         }
+
         public Form1(FormMenu menu, Hra ulozenaHra)
         {
             InitializeComponent();
@@ -77,7 +78,6 @@ namespace KaretniHra
         {
             for (int i = 0; i < 4; i++)
             {
-
                 PictureBoxKarta sedmaPctBox = new PictureBoxKarta();
                 Karta sedma = new Karta((ZnakyKaret)i, CisloKaret.sedma);
                 sedmaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
@@ -144,11 +144,11 @@ namespace KaretniHra
                 novaHra.BalikKaret.Add(eso);
             }
         }
+
         private void VytvoreniGrafikyKaret()
         {
             for (int i = 0; i < 4; i++)
             {
-
                 PictureBoxKarta sedmaPctBox = new PictureBoxKarta();
                 sedmaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
                 sedmaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
@@ -249,7 +249,7 @@ namespace KaretniHra
         private void LiznutiKarty(object sender, EventArgs e)
         {
             //TODO: animace karty/ vykresleni karet prozatim
-            if (novaHra.HrajeHrac && button1.Visible!=true)
+            if (novaHra.HrajeHrac && button1.Visible != true)
             {
                 if (novaHra.BalikKaret.Count == 0)
                 {
@@ -264,7 +264,7 @@ namespace KaretniHra
                 {
                     for (int i = 0; i < novaHra.PocetSedmicek * 2; i++)
                     {
-                        if(novaHra.HraciPoleKaret.Count == 1 && novaHra.BalikKaret.Count == 0)
+                        if (novaHra.HraciPoleKaret.Count == 1 && novaHra.BalikKaret.Count == 0)
                         {
                             // nic nedelej, protoze nelze uz pridat kartu do ruky
                         }
@@ -352,6 +352,7 @@ namespace KaretniHra
                 this.Controls.Add(GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.Hrac1.KartyVRuce[i])]);
             }
         }
+
         /// <summary>
         /// prekresli karty pro protihrace
         /// </summary>
@@ -363,7 +364,7 @@ namespace KaretniHra
                 int polovina = pocetKaretProtiHrace / 2;
                 int zacatekSouradnic = 500 - (25 * polovina);
 
-                GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.ProtiHrac.KartyVRuce[i])].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 10);
+                GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.ProtiHrac.KartyVRuce[i])].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 0);
                 this.Controls.Add(GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.ProtiHrac.KartyVRuce[i])]);
             }
         }
@@ -372,7 +373,7 @@ namespace KaretniHra
         {
             PictureBoxKarta pctBox = sender as PictureBoxKarta;
             Karta karta = novaHra.VratKartuGrafikyNaIndexu(GrafikaKaret.IndexOf(pctBox));
-            
+
             if (novaHra.Hrac1.MaIdentickouKartu(karta.CisloKarty, karta.Znak))
             {
                 pctBox.BringToFront();
@@ -616,7 +617,6 @@ namespace KaretniHra
                     prekresliKartyProtihrace();
                     uvolniHraciInterakci();
                 }
-                
             }
         }
 
@@ -637,28 +637,20 @@ namespace KaretniHra
             }
         }
 
-        public void AnimaceKarty()
+        public void AnimaceKarty(bool jeHrac, PictureBoxKarta karta)
         {
-            //foreach (Karta karta in novaHra.Hrac1.KartyVRuce)
-            //{
-            //    karta.Enabled = false;
-            //}
-
-            //// TODO: pocitac
-            //// odebira kartu
-            //// liza kartu
-
-            //// hrac
-
-            //// odebira kartu
-            //// liza kartu
-
-            //System.Threading.Thread.Sleep(300);
-
-            //foreach (Karta karta in novaHra.Hrac1.KartyVRuce)
-            //{
-            //    karta.Enabled = true;
-            //}
+            int xKrok = (karta.Location.X-500)/50;
+            int yKrok = (200- karta.Location.Y) /50;
+            if (jeHrac)
+            {
+                zakazHraciInterakci();
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                karta.Location = new System.Drawing.Point(karta.Location.X + xKrok, yKrok + karta.Location.Y);
+                this.Refresh();
+                System.Threading.Thread.Sleep(10);
+            }
         }
 
         /// <summary>
@@ -755,6 +747,8 @@ namespace KaretniHra
         {
             if (karta.JeHrace)
             {
+                AnimaceKarty(true, GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)]);
+
                 novaHra.Hrac1.OdeberKartu(karta, GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)]);
                 novaHra.HraciPoleKaret.Add(karta);
                 novaHra.posledniHrana = karta;
@@ -765,6 +759,8 @@ namespace KaretniHra
             }
             else
             {
+                AnimaceKarty(false, GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)]);
+
                 novaHra.ProtiHrac.OdeberKartu(karta, GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)]);
                 novaHra.HraciPoleKaret.Add(karta);
                 novaHra.posledniHrana = karta;
@@ -782,6 +778,9 @@ namespace KaretniHra
                 GrafikaKaret[novaHra.VratIndexGrafikyKarty(k)].Enabled = false;
             }
             pictureBoxBalik.Enabled = false;
+            button2.Enabled = false;
+            button3.Enabled = false;
+            button4.Enabled = false;
         }
 
         private void uvolniHraciInterakci()
@@ -791,7 +790,11 @@ namespace KaretniHra
                 GrafikaKaret[novaHra.VratIndexGrafikyKarty(k)].Enabled = true;
             }
             pictureBoxBalik.Enabled = true;
+            button2.Enabled = true;
+            button3.Enabled = true;
+            button4.Enabled = true;
         }
+
         /// <summary>
         /// tlacitko "stojim", ukonci kolo, pokud hrac nema eso nebo ho nechce zahrat
         /// </summary>
@@ -803,8 +806,8 @@ namespace KaretniHra
             novaHra.HrajeHrac = false;
             button1.Visible = false;
             tahProtiHrace();
-            
         }
+
         /// <summary>
         /// zavre hru
         /// </summary>
@@ -814,6 +817,7 @@ namespace KaretniHra
         {
             Application.Exit();
         }
+
         /// <summary>
         /// prejde do menu a ukonci rozehranou hru
         /// </summary>
@@ -824,6 +828,7 @@ namespace KaretniHra
             FormMenu.Show();
             this.Close();
         }
+
         /// <summary>
         /// serializuje a ulozi hru
         /// </summary>
