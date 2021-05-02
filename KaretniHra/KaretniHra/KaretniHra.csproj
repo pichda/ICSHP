@@ -58,10 +58,9 @@
     <Compile Include="FormMenu.Designer.cs">
       <DependentUpon>FormMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Hra.cs" />
     <Compile Include="Hrac.cs" />
-    <Compile Include="Karta.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Karta.cs" />
     <Compile Include="CisloKaret.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

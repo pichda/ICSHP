@@ -178,6 +178,7 @@ namespace KaretniHra
             this.button2.TabIndex = 23;
             this.button2.Text = "Ulož hru";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -204,6 +205,7 @@ namespace KaretniHra
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1184, 561);
+            this.ControlBox = false;
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -217,6 +219,7 @@ namespace KaretniHra
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBoxHrane);
             this.Controls.Add(this.pictureBoxBalik);
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();

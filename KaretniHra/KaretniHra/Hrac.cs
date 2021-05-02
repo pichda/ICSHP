@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace KaretniHra
 {
@@ -121,27 +122,28 @@ namespace KaretniHra
             return KartyVRuce.Count();
         }
 
-        public void PridejKartuDoRuky(Karta karta)
+        public void PridejKartuDoRuky(Karta karta, PictureBox grafikaKarty)
         {
             if (JeHrac)
             {
                 karta.JeHrace = true;
-                karta.Image = Util.DejObrazekKarty(karta);
-                karta.Visible = true;
+                grafikaKarty.Image = Util.DejObrazekKarty(karta);
+                grafikaKarty.Visible = true;
             }
             else
             {
                 karta.JeHrace = false;
-                karta.Image = Properties.Resources.zada;
-                karta.Visible = true;
+                grafikaKarty.Image = Properties.Resources.zada;
+                grafikaKarty.Visible = true;
             }
             KartyVRuce.Add(karta);
         }
 
-        public void OdeberKartu(Karta karta)
+        public void OdeberKartu(Karta karta, PictureBox grafikaKarty)
         {
+
             karta.JeHrace = false;
-            karta.Visible = false;
+            grafikaKarty.Visible = false;
             KartyVRuce.Remove(karta);
         }
 
