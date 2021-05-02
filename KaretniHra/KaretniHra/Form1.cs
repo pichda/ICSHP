@@ -639,7 +639,7 @@ namespace KaretniHra
 
         public void AnimaceKarty(bool jeHrac, PictureBoxKarta karta)
         {
-            int xKrok = (karta.Location.X-500)/50;
+            int xKrok = (500- karta.Location.X) /50;
             int yKrok = (200- karta.Location.Y) /50;
             if (jeHrac)
             {
