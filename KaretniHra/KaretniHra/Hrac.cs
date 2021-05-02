@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace KaretniHra
 {
@@ -15,6 +12,7 @@ namespace KaretniHra
         public List<Karta> KartyVRuce { get; set; }
         public string Jmeno { get; set; }
         public bool JeHrac { get; set; }
+
         public Hrac(String jmeno, bool jeHrac)
         {
             KartyVRuce = new List<Karta>();
@@ -48,11 +46,24 @@ namespace KaretniHra
 
         public int MaKartuAJeHratelna(CisloKaret cisloKarty, ZnakyKaret aktualniZnak)
         {
-            foreach (var karta in KartyVRuce)
+            if (cisloKarty == CisloKaret.svrsek)
             {
-                if (karta.CisloKarty == cisloKarty && karta.Znak ==aktualniZnak)
+                foreach (var karta in KartyVRuce)
                 {
-                    return KartyVRuce.IndexOf(karta);
+                    if (karta.CisloKarty == cisloKarty)
+                    {
+                        return KartyVRuce.IndexOf(karta);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var karta in KartyVRuce)
+                {
+                    if (karta.CisloKarty == cisloKarty && karta.Znak == aktualniZnak)
+                    {
+                        return KartyVRuce.IndexOf(karta);
+                    }
                 }
             }
             return -1;
@@ -64,22 +75,26 @@ namespace KaretniHra
 
             foreach (var karta in KartyVRuce)
             {
-                if(karta.Znak != zmenenyZnak)
+                if (karta.Znak != zmenenyZnak)
                 {
                     switch (karta.Znak)
                     {
                         case ZnakyKaret.list:
                             pole[0]++;
                             break;
+
                         case ZnakyKaret.kule:
                             pole[1]++;
                             break;
+
                         case ZnakyKaret.srdce:
                             pole[2]++;
                             break;
+
                         case ZnakyKaret.zalud:
                             pole[3]++;
                             break;
+
                         default:
                             break;
                     }
@@ -94,19 +109,22 @@ namespace KaretniHra
                     {
                         case 0:
                             return ZnakyKaret.list;
+
                         case 1:
                             return ZnakyKaret.kule;
+
                         case 2:
                             return ZnakyKaret.srdce;
+
                         case 3:
                             return ZnakyKaret.zalud;
+
                         default:
                             break;
                     }
                 }
             }
             throw new NotImplementedException();
-
         }
 
         /// <summary>
@@ -120,7 +138,7 @@ namespace KaretniHra
             {
                 if (karta.CisloKarty != CisloKaret.eso && karta.CisloKarty != CisloKaret.sedma && karta.CisloKarty != CisloKaret.svrsek)
                 {
-                    if(karta.CisloKarty == kartaNaPlose.CisloKarty || karta.Znak == aktualniZnak)
+                    if (karta.CisloKarty == kartaNaPlose.CisloKarty || karta.Znak == aktualniZnak)
                     {
                         return KartyVRuce.IndexOf(karta);
                     }
@@ -128,7 +146,6 @@ namespace KaretniHra
             }
             return -1;
         }
-
 
         public int DejPocetKaret()
         {
@@ -167,9 +184,8 @@ namespace KaretniHra
                 {
                     return karta;
                 }
-                
             }
-                throw new ArgumentException();
+            throw new ArgumentException();
         }
 
         public Karta DejPrvniNalezenouKartu(CisloKaret cisloKarty, ZnakyKaret znakKarty)
@@ -180,17 +196,18 @@ namespace KaretniHra
                 {
                     return karta;
                 }
-
             }
             throw new ArgumentException();
         }
+
         public Karta DejPrvniKartu()
         {
             return KartyVRuce[0];
         }
+
         public Karta DejKartuNaIndexu(int index)
         {
-            if (index > DejPocetKaret()-1)
+            if (index > DejPocetKaret() - 1)
             {
                 throw new IndexOutOfRangeException();
             }

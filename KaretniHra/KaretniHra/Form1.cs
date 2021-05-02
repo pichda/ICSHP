@@ -649,7 +649,6 @@ namespace KaretniHra
             {
                 karta.Location = new System.Drawing.Point(karta.Location.X + xKrok, yKrok + karta.Location.Y);
                 this.Refresh();
-                System.Threading.Thread.Sleep(10);
             }
         }
 
