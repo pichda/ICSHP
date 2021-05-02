@@ -47,6 +47,8 @@ namespace KaretniHra
 
             pictureBoxHrane.Image = Util.DejObrazekKarty(novaHra.posledniHrana);
             pictureBoxHrane.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox5.Visible = true;
+            pictureBox5.Image = Util.DejObrazekZnaku(novaHra.AktualniZnak);
 
             prekresliKarty();
             prekresliKartyProtihrace();
@@ -248,7 +250,6 @@ namespace KaretniHra
         /// <param name="e"></param>
         private void LiznutiKarty(object sender, EventArgs e)
         {
-            //TODO: animace karty/ vykresleni karet prozatim
             if (novaHra.HrajeHrac && button1.Visible != true)
             {
                 if (novaHra.BalikKaret.Count == 0)
@@ -318,9 +319,16 @@ namespace KaretniHra
                 {
                     for (int i = 0; i < novaHra.PocetSedmicek * 2; i++)
                     {
-                        Karta karta = novaHra.BalikKaret[novaHra.BalikKaret.Count - 1];
-                        novaHra.ProtiHrac.PridejKartuDoRuky(karta, GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)]);
-                        OdeberPosledniKartuZBaliku();
+                        if (novaHra.HraciPoleKaret.Count == 1 && novaHra.BalikKaret.Count == 0)
+                        {
+                            // nic nedelej, protoze nelze uz pridat kartu do ruky
+                        }
+                        else
+                        {
+                            Karta karta = novaHra.BalikKaret[novaHra.BalikKaret.Count - 1];
+                            novaHra.ProtiHrac.PridejKartuDoRuky(karta, GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)]);
+                            OdeberPosledniKartuZBaliku();
+                        }
                     }
                     novaHra.PocetSedmicek = 0;
                 }
@@ -458,7 +466,8 @@ namespace KaretniHra
                         zakazHraciInterakci();
                         label2.Text = "YOU WIN";
                         label2.Visible = true;
-                        //TODO: vypis na obrazovku "YOU WIN", prehod po 5ti sekundach na druhy form (menu, kde bude nova hra nebo nacti hru)
+                        button3.Enabled = true;
+                        button4.Enabled = true;
                     }
                     else
                     {
@@ -610,7 +619,9 @@ namespace KaretniHra
                     {
                         GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)].Visible = false;
                     }
-                    //TODO: vypis na obrazovku "YOU WIN", prehod po 5ti sekundach na druhy form (menu, kde bude nova hra nebo nacti hru)
+
+                    button3.Enabled = true;
+                    button4.Enabled = true;
                 }
                 else
                 {
@@ -639,8 +650,8 @@ namespace KaretniHra
 
         public void AnimaceKarty(bool jeHrac, PictureBoxKarta karta)
         {
-            int xKrok = (500- karta.Location.X) /50;
-            int yKrok = (200- karta.Location.Y) /50;
+            int xKrok = (500 - karta.Location.X) / 50;
+            int yKrok = (200 - karta.Location.Y) / 50;
             if (jeHrac)
             {
                 zakazHraciInterakci();

@@ -7,7 +7,6 @@ namespace KaretniHra
     [Serializable]
     public class Hrac
     {
-        // TODO: refactoring (pridani metody add, ...)
 
         public List<Karta> KartyVRuce { get; set; }
         public string Jmeno { get; set; }
