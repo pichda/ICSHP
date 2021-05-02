@@ -33,6 +33,18 @@ namespace KaretniHra
             return false;
         }
 
+        public bool MaIdentickouKartu(CisloKaret cisloKarty, ZnakyKaret znakKarty)
+        {
+            foreach (var karta in KartyVRuce)
+            {
+                if (karta.CisloKarty == cisloKarty && znakKarty == karta.Znak)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public int MaKartuAJeHratelna(CisloKaret cisloKarty, ZnakyKaret aktualniZnak)
         {
             foreach (var karta in KartyVRuce)
@@ -122,7 +134,7 @@ namespace KaretniHra
             return KartyVRuce.Count();
         }
 
-        public void PridejKartuDoRuky(Karta karta, PictureBox grafikaKarty)
+        public void PridejKartuDoRuky(Karta karta, PictureBoxKarta grafikaKarty)
         {
             if (JeHrac)
             {
@@ -139,9 +151,8 @@ namespace KaretniHra
             KartyVRuce.Add(karta);
         }
 
-        public void OdeberKartu(Karta karta, PictureBox grafikaKarty)
+        public void OdeberKartu(Karta karta, PictureBoxKarta grafikaKarty)
         {
-
             karta.JeHrace = false;
             grafikaKarty.Visible = false;
             KartyVRuce.Remove(karta);
@@ -158,6 +169,19 @@ namespace KaretniHra
                 
             }
                 throw new ArgumentException();
+        }
+
+        public Karta DejPrvniNalezenouKartu(CisloKaret cisloKarty, ZnakyKaret znakKarty)
+        {
+            foreach (var karta in KartyVRuce)
+            {
+                if (karta.CisloKarty == cisloKarty && znakKarty == karta.Znak)
+                {
+                    return karta;
+                }
+
+            }
+            throw new ArgumentException();
         }
         public Karta DejPrvniKartu()
         {

@@ -211,6 +211,5 @@ namespace KaretniHra
             }
             throw new ArgumentException();
         }
-
     }
 }

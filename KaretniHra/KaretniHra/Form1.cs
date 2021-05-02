@@ -12,11 +12,12 @@ namespace KaretniHra
     {
         public FormMenu FormMenu { get; set; }
         public Hra novaHra { get; set; }
-        public List<PictureBox> GrafikaKaret { get; set; }
+        public List<PictureBoxKarta> GrafikaKaret { get; set; }
         public Form1(FormMenu menu)
         {
             InitializeComponent();
             FormMenu = menu;
+            GrafikaKaret = new List<PictureBoxKarta>();
 
             Hrac hrac1 = new Hrac("Hráč", true);
             Hrac protiHrac = new Hrac("Počítač", false);
@@ -38,7 +39,13 @@ namespace KaretniHra
         public Form1(FormMenu menu, Hra ulozenaHra)
         {
             FormMenu = menu;
+            GrafikaKaret = new List<PictureBoxKarta>();
             novaHra = ulozenaHra;
+
+            inicializaceHry();
+            StartHry();
+            prekresliKarty();
+            prekresliKartyProtihrace();
         }
 
         public void inicializaceHry()
@@ -67,63 +74,66 @@ namespace KaretniHra
         {
             // list, kule, srdce, zalud
             // sedma, osmicka, devitka, desitka, spodek, svrsek, kral, eso
-            PictureBox pctBox = new PictureBox();
-            pctBox.Height = 150;
-            pctBox.Width = 100;
-            pctBox.Visible = true;
-            pctBox.Image = Properties.Resources.zada;
-            pctBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            
 
             for (int i = 0; i < 4; i++)
             {
-                
+
+                PictureBoxKarta sedmaPctBox = new PictureBoxKarta();
                 Karta sedma = new Karta((ZnakyKaret)i, CisloKaret.sedma);
-                pctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
-                pctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
-                pctBox.Click += new EventHandler(KliknutiNaKartu);
-                GrafikaKaret.Add(pctBox);
+                sedmaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                sedmaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                sedmaPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(sedmaPctBox);
 
+                PictureBoxKarta osmickaPctBox = new PictureBoxKarta();
                 Karta osmicka = new Karta((ZnakyKaret)i, CisloKaret.osmicka);
-                pctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
-                pctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
-                pctBox.Click += new EventHandler(KliknutiNaKartu);
-                GrafikaKaret.Add(pctBox);
+                osmickaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                osmickaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                osmickaPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(osmickaPctBox);
 
+                PictureBoxKarta devitkaPctBox = new PictureBoxKarta();
                 Karta devitka = new Karta((ZnakyKaret)i, CisloKaret.devitka);
-                pctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
-                pctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
-                pctBox.Click += new EventHandler(KliknutiNaKartu);
-                GrafikaKaret.Add(pctBox);
+                devitkaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                devitkaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                devitkaPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(devitkaPctBox);
 
+                PictureBoxKarta desitkaPctBox = new PictureBoxKarta();
                 Karta desitka = new Karta((ZnakyKaret)i, CisloKaret.desitka);
-                pctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
-                pctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
-                pctBox.Click += new EventHandler(KliknutiNaKartu);
-                GrafikaKaret.Add(pctBox);
+                desitkaPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                desitkaPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                desitkaPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(desitkaPctBox);
 
+                PictureBoxKarta spodekPctBox = new PictureBoxKarta();
                 Karta spodek = new Karta((ZnakyKaret)i, CisloKaret.spodek);
-                pctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
-                pctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
-                pctBox.Click += new EventHandler(KliknutiNaKartu);
-                GrafikaKaret.Add(pctBox);
+                spodekPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                spodekPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                spodekPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(spodekPctBox);
 
+                PictureBoxKarta svrsekPctBox = new PictureBoxKarta();
                 Karta svrsek = new Karta((ZnakyKaret)i, CisloKaret.svrsek);
-                pctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
-                pctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
-                pctBox.Click += new EventHandler(KliknutiNaKartu);
-                GrafikaKaret.Add(pctBox);
+                svrsekPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                svrsekPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                svrsekPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(svrsekPctBox);
 
+                PictureBoxKarta kralPctBox = new PictureBoxKarta();
                 Karta kral = new Karta((ZnakyKaret)i, CisloKaret.kral);
-                pctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
-                pctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
-                pctBox.Click += new EventHandler(KliknutiNaKartu);
-                GrafikaKaret.Add(pctBox);
+                kralPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                kralPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                kralPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(kralPctBox);
 
+                PictureBoxKarta esoPctBox = new PictureBoxKarta();
                 Karta eso = new Karta((ZnakyKaret)i, CisloKaret.eso);
-                pctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
-                pctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
-                pctBox.Click += new EventHandler(KliknutiNaKartu);
-                GrafikaKaret.Add(pctBox);
+                esoPctBox.MouseHover += new EventHandler(OnHoverZobrazKartu);
+                esoPctBox.MouseLeave += new EventHandler(OnHoverOutSkryjKartu);
+                esoPctBox.Click += new EventHandler(KliknutiNaKartu);
+                GrafikaKaret.Add(esoPctBox);
 
                 novaHra.BalikKaret.Add(sedma);
                 novaHra.BalikKaret.Add(osmicka);
@@ -208,7 +218,7 @@ namespace KaretniHra
                         else
                         {
                             Karta kartaProHrace = novaHra.BalikKaret[novaHra.BalikKaret.Count - 1];
-                            novaHra.Hrac1.PridejKartuDoRuky(kartaProHrace);
+                            novaHra.Hrac1.PridejKartuDoRuky(kartaProHrace, GrafikaKaret[novaHra.VratIndexGrafikyKarty(kartaProHrace)]);
                             OdeberPosledniKartuZBaliku();
 
                             if (novaHra.BalikKaret.Count == 0)
@@ -228,7 +238,7 @@ namespace KaretniHra
                 else
                 {
                     Karta kartaProHrace = novaHra.BalikKaret[novaHra.BalikKaret.Count - 1];
-                    novaHra.Hrac1.PridejKartuDoRuky(kartaProHrace);
+                    novaHra.Hrac1.PridejKartuDoRuky(kartaProHrace, GrafikaKaret[novaHra.VratIndexGrafikyKarty(kartaProHrace)]);
                     OdeberPosledniKartuZBaliku();
                 }
                 novaHra.HrajeHrac = false;
@@ -284,8 +294,9 @@ namespace KaretniHra
                 int polovina = pocetKaret / 2;
                 int zacatekSouradnic = 500 - (25 * polovina);
 
-                novaHra.Hrac1.KartyVRuce[i].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 400);
-                this.Controls.Add(novaHra.Hrac1.KartyVRuce[i]);
+                GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.Hrac1.KartyVRuce[i])].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 400);
+                GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.Hrac1.KartyVRuce[i])].Image = Util.DejObrazekKarty(novaHra.Hrac1.KartyVRuce[i]);
+                this.Controls.Add(GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.Hrac1.KartyVRuce[i])]);
             }
         }
         /// <summary>
@@ -299,24 +310,27 @@ namespace KaretniHra
                 int polovina = pocetKaretProtiHrace / 2;
                 int zacatekSouradnic = 500 - (25 * polovina);
 
-                novaHra.ProtiHrac.KartyVRuce[i].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 10);
-                this.Controls.Add(novaHra.ProtiHrac.KartyVRuce[i]);
+                GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.ProtiHrac.KartyVRuce[i])].Location = new System.Drawing.Point(zacatekSouradnic + (25 * i), 10);
+                this.Controls.Add(GrafikaKaret[novaHra.VratIndexGrafikyKarty(novaHra.ProtiHrac.KartyVRuce[i])]);
             }
         }
 
         private void OnHoverZobrazKartu(object sender, EventArgs e)
         {
-            Karta karta = sender as Karta;
-            if (karta.JeHrace)
+            PictureBoxKarta pctBox = sender as PictureBoxKarta;
+            Karta karta = novaHra.VratKartuGrafikyNaIndexu(GrafikaKaret.IndexOf(pctBox));
+            
+            if (novaHra.Hrac1.MaIdentickouKartu(karta.CisloKarty, karta.Znak))
             {
-                karta.BringToFront();
+                pctBox.BringToFront();
             }
         }
 
         private void OnHoverOutSkryjKartu(object sender, EventArgs e)
         {
-            Karta karta = sender as Karta;
-            if (karta.JeHrace)
+            PictureBoxKarta pctBox = sender as PictureBoxKarta;
+            Karta karta = novaHra.VratKartuGrafikyNaIndexu(GrafikaKaret.IndexOf(pctBox));
+            if (novaHra.Hrac1.MaIdentickouKartu(karta.CisloKarty, karta.Znak))
             {
                 prekresliKarty();
             }
@@ -326,9 +340,11 @@ namespace KaretniHra
         {
             if (novaHra.HrajeHrac)
             {
-                Karta karta = sender as Karta;
-                if (karta.JeHrace)
+                PictureBoxKarta pctBox = sender as PictureBoxKarta;
+                Karta karta = novaHra.VratKartuGrafikyNaIndexu(GrafikaKaret.IndexOf(pctBox));
+                if (novaHra.Hrac1.MaIdentickouKartu(karta.CisloKarty, karta.Znak))
                 {
+                    karta = novaHra.Hrac1.DejPrvniNalezenouKartu(karta.CisloKarty, karta.Znak);
                     if (novaHra.JeNevyzvednutaPenalizace)
                     {
                         if (karta.CisloKarty == CisloKaret.sedma && novaHra.posledniHrana.CisloKarty == CisloKaret.sedma)
@@ -533,11 +549,12 @@ namespace KaretniHra
                     prekresliKarty();
                     zakazHraciInterakci();
                     label2.Text = "YOU LOSE";
+                    label2.ForeColor = System.Drawing.Color.Red;
                     label2.Visible = true;
 
                     foreach (var karta in novaHra.Hrac1.KartyVRuce)
                     {
-                        karta.Visible = false;
+                        GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)].Visible = false;
                     }
                     //TODO: vypis na obrazovku "YOU WIN", prehod po 5ti sekundach na druhy form (menu, kde bude nova hra nebo nacti hru)
                 }
@@ -685,7 +702,7 @@ namespace KaretniHra
         {
             if (karta.JeHrace)
             {
-                novaHra.Hrac1.OdeberKartu(karta);
+                novaHra.Hrac1.OdeberKartu(karta, GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)]);
                 novaHra.HraciPoleKaret.Add(karta);
                 novaHra.posledniHrana = karta;
                 novaHra.AktualniZnak = karta.Znak;
@@ -695,7 +712,7 @@ namespace KaretniHra
             }
             else
             {
-                novaHra.ProtiHrac.OdeberKartu(karta);
+                novaHra.ProtiHrac.OdeberKartu(karta, GrafikaKaret[novaHra.VratIndexGrafikyKarty(karta)]);
                 novaHra.HraciPoleKaret.Add(karta);
                 novaHra.posledniHrana = karta;
                 novaHra.AktualniZnak = karta.Znak;
@@ -709,7 +726,7 @@ namespace KaretniHra
         {
             foreach (Karta k in novaHra.Hrac1.KartyVRuce)
             {
-                k.Enabled = false;
+                GrafikaKaret[novaHra.VratIndexGrafikyKarty(k)].Enabled = false;
             }
             pictureBoxBalik.Enabled = false;
         }
@@ -718,11 +735,15 @@ namespace KaretniHra
         {
             foreach (Karta k in novaHra.Hrac1.KartyVRuce)
             {
-                k.Enabled = true;
+                GrafikaKaret[novaHra.VratIndexGrafikyKarty(k)].Enabled = true;
             }
             pictureBoxBalik.Enabled = true;
         }
-
+        /// <summary>
+        /// tlacitko "stojim", ukonci kolo, pokud hrac nema eso nebo ho nechce zahrat
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
             novaHra.JeNevyzvednutaPenalizace = false;
